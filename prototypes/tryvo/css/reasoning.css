@@ -1,0 +1,77 @@
+/* Tryvo investigation revision: evidence, claims, and the plan they produce. */
+.practice-route{padding-top:36px;padding-bottom:12px}
+.route-intro{display:flex;justify-content:space-between;align-items:center;gap:24px}
+.route-intro h2{font-size:28px;margin:8px 0}
+.route-intro p{color:var(--muted)}
+.route-intro .button{flex-shrink:0}
+.practice-route ol{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));list-style:none;padding:0;margin:24px 0 14px;border:1px solid #c6d6e7;border-radius:14px;overflow:hidden;background:white}
+.practice-route li{display:flex;gap:16px;padding:24px;border-right:1px solid var(--line)}
+.practice-route li:last-child{border:0}
+.practice-route li>span{width:30px;height:30px;flex-shrink:0;border:1px solid #adc2dd;border-radius:50%;display:grid;place-items:center;color:var(--blue)}
+.practice-route h3{font-size:20px}.practice-route li p{font-size:14px;color:var(--muted);margin:10px 0}
+.practice-route .route-done{background:#eff8f3}.route-done>span{background:#dcefe9}
+.scene-ribbon-wrap{margin-bottom:18px;border:1px solid var(--line);border-radius:10px;background:#fff}
+.scene-ribbon-wrap>summary{padding:12px 18px;font-size:14px;cursor:pointer;min-height:44px;color:var(--muted)}
+.scene-ribbon-wrap .scene-ribbon{margin:0;border:0;border-top:1px solid var(--line);border-radius:0}
+.judgment-sidebar>details>summary{font-weight:600;font-size:15px;cursor:pointer;min-height:44px;margin-bottom:8px}
+.judgment-sidebar>details[open]>.small-label{display:none}
+.connection-work{margin:24px 0;padding:24px;background:#edf3fa;border:1px solid #c6d6e7;border-radius:12px}
+.connection-heading{display:flex;gap:12px;align-items:flex-start;margin-bottom:20px}
+.connection-heading>span{color:var(--blue);margin-top:4px}
+.connection-heading h2{font-size:23px}.connection-heading p{font-size:14px;color:var(--muted);margin-top:8px}
+.connection-work .connection-card{padding:18px;margin:20px 0;border:1px solid #bfcee1;border-radius:8px;background:#fff}
+.connection-card legend{padding:0 5px;font-size:16px;font-weight:650;max-width:100%}
+.connection-card label,.planner label{display:block;font-weight:600;font-size:14px;margin:14px 0 6px}
+.connection-card select,.planner select{font:inherit;font-weight:400;color:var(--ink);display:block;width:100%;min-width:0;min-height:48px;background:#fff;border:1px solid #97adc8;border-radius:6px;padding:10px 30px 10px 10px;margin-top:8px}
+.connection-card>p{font-size:15px;margin-top:12px}
+.planner{padding:24px 0;border-top:1px solid var(--line);margin:24px 0}
+.planner h2{font-size:25px}.planner>p{color:var(--muted);font-size:15px;margin:12px 0 20px}
+.decision-substeps{display:flex;gap:12px;margin:8px 0 22px;font-size:12px;color:var(--muted)}
+.decision-substeps span{padding:8px 0;border-bottom:2px solid var(--line)}.decision-substeps .active{color:var(--blue);border-color:var(--blue);font-weight:650}
+.decision-recap{padding-top:24px;margin-top:24px;border-top:1px solid #c1d0e3}.decision-recap p{font-size:17px;margin:12px 0 20px}
+@media(min-width:761px){.decision-context{position:sticky;top:24px;max-height:calc(100vh - 48px);overflow:auto}}
+.plan-board{background:#203858;color:#fff;border:1px solid #142b49;border-radius:14px;margin-top:24px;overflow:hidden;box-shadow:0 5px 0 #d4deea}
+.plan-board-title{display:flex;align-items:center;gap:10px;padding:18px;border-bottom:1px solid #50637e;flex-wrap:wrap}
+.plan-board-title strong{font-family:Bricolage,'Segoe UI',sans-serif;font-size:20px}
+.plan-board-title .badge{background:#dfeaf8;color:#203858;font-size:11px}
+.plan-groups{display:grid;grid-template-columns:1fr 24px 1fr;gap:10px;padding:24px 18px}
+.plan-groups article{padding:18px;border:1px solid #7790ae;border-radius:8px;background:#f7fbff;color:var(--ink);position:relative}
+.plan-groups article>span{font-size:12px;color:var(--blue)}.plan-groups h3{font-size:22px;margin:14px 0 10px}
+.plan-groups p{font-size:13px;line-height:1.5}.versus{align-self:center;text-align:center;font-size:24px;color:#bad7ed}
+.assignment-line{margin:0!important;padding:14px 18px;background:#314b6d;font-size:14px!important;color:#fff}
+.plan-feedback{padding:24px;background:#eef6f4;color:var(--ink)}.plan-feedback h3{font-size:24px}.plan-feedback p{font-size:15px;line-height:1.6;margin-top:14px}
+.connection-feedback{margin-top:30px}.connection-feedback>.section-top{display:block;margin-bottom:18px}.connection-feedback h2{font-size:25px;margin-bottom:8px}
+.feedback-item{display:flex;align-items:flex-start;gap:16px;background:#fff;border:1px solid #b6c9dc;border-left:4px solid #659c8b;padding:24px;margin:14px 0;border-radius:8px}
+.feedback-item.revisit{border-left-color:#9f6c21;background:#fffbf1}
+.feedback-icon{width:32px;height:32px;flex-shrink:0;color:var(--teal)}.revisit .feedback-icon{color:#87581c}
+.feedback-item h3{font-size:21px;margin-top:8px}.feedback-item p{font-size:15px;line-height:1.65;margin-top:12px}
+.ungraded-note{background:#f3f5f8;border-radius:8px;padding:14px;margin-top:20px}.ungraded-note>strong{font-size:12px;color:var(--muted)}
+.ungraded-note .personal-note{font-size:14px;color:var(--muted);margin-top:8px}
+.practice-next{display:flex;align-items:center;justify-content:space-between;gap:24px;margin:32px 0 24px;padding:26px;background:#e7effc;border-radius:12px;border:1px solid #c5d6ed}
+.practice-next h3{font-size:23px;margin-top:8px}.practice-next p{font-size:14px;color:var(--muted);margin-top:12px;max-width:650px}.practice-next .button{flex-shrink:0;max-width:260px}
+.practice-recognition{background:#eaf5ef;border:1px solid #b9d5c7;padding:24px;border-radius:12px;margin-top:24px}.practice-recognition h2{font-size:23px}.practice-recognition p{margin-top:12px}
+.rival-panel{border:1px solid #c1d0e4;border-radius:12px;padding:22px;background:#edf3fa;margin-top:24px}.rival-panel h3{font-size:22px}
+.rival-panel>p{font-size:14px;margin:12px 0}.rival-columns{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:18px 0}.rival-columns>article{padding:18px;background:#fff;border:1px solid #ccd8e5;border-radius:8px}.rival-columns p{font-size:14px;margin-top:10px}.rival-columns h3{font-size:20px}
+.rival-panel summary,.sample-rankings summary{min-height:44px;padding:12px 0;font-weight:600;cursor:pointer;font-size:14px}
+.rival-columns .feedback-item{padding:14px;gap:8px}.rival-columns .feedback-item h3{font-size:17px}.rival-columns .connection-feedback h2{font-size:19px}.rival-columns .feedback-icon{display:none}
+.history-result>span{display:block}.result-sidebar .rival-columns{grid-template-columns:1fr}
+.saved-plan{margin-top:20px}.saved-plan>summary{min-height:44px;padding:12px 0;font-weight:600;cursor:pointer;color:var(--blue)}
+@media(max-width:760px){
+ .practice-route{padding-top:24px}.route-intro{display:block}.route-intro h2{font-size:25px}.route-intro .button{margin-top:16px}
+ .practice-route ol{display:block}.practice-route li{padding:18px;border-right:0;border-bottom:1px solid var(--line)}.practice-route h3{font-size:20px}
+ .scene-ribbon-wrap{margin-bottom:12px}.workspace-top{margin-bottom:12px}.workspace>.mobile-initial{display:none}
+ .workspace .evidence-list{display:flex;flex-wrap:nowrap;overflow-x:auto;align-items:stretch;padding:12px;gap:8px;scroll-snap-type:x proximity;border-radius:12px 12px 0 0;min-width:0;width:100%}
+ .evidence-list>h2,.evidence-list>.caption{display:none}
+ .evidence-list .evidence-tab{flex:0 0 146px;width:146px;min-height:94px;margin:0;scroll-snap-align:start;padding:10px;gap:6px}
+ .evidence-tab .clue-object{height:28px;width:44px}.evidence-tab strong{font-size:12px}.evidence-tab small{font-size:10px}
+ .evidence-detail{padding:18px}.evidence-object{height:46px}.evidence-object svg{height:46px}.evidence-detail .sheet-top{margin-bottom:12px}
+ .judgment-sidebar{padding:14px 18px}.judgment-sidebar .hint-box{margin-top:8px;padding-top:8px}
+ .connection-work{padding:16px;margin:20px 0}.connection-heading h2{font-size:21px}.connection-work .connection-card{padding:14px;margin:18px 0}
+ .connection-card select,.planner select{font-size:16px;max-width:100%;text-overflow:ellipsis}
+ .planner h2{font-size:23px}.plan-groups{grid-template-columns:1fr;gap:8px;padding:16px}.plan-groups article{padding:16px}.plan-groups h3{font-size:22px;margin:8px 0}.versus{transform:rotate(90deg)}
+ .plan-board-title{padding:16px}.plan-board-title strong{font-size:19px}.plan-feedback{padding:20px}.plan-feedback h3{font-size:23px}
+ .feedback-item{padding:18px 14px;gap:8px}.feedback-icon{width:24px}.feedback-item h3{font-size:20px}.connection-feedback h2{font-size:24px}
+ .practice-next{display:block;padding:20px}.practice-next .button{max-width:none;margin-top:18px;width:100%}
+ .rival-columns{grid-template-columns:1fr}.practice-recognition{padding:20px}.practice-recognition h2{font-size:22px}
+}
+@media(prefers-reduced-motion:reduce){.evidence-list{scroll-behavior:auto;scroll-snap-type:none}}

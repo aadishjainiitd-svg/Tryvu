@@ -1,0 +1,338 @@
+{
+  "first-light": {
+    "id": "first-light",
+    "title": "The hotel with empty rooms",
+    "skill": "Business diagnosis",
+    "role": "Hotel strategy lead",
+    "person": "Anika · hotel owner",
+    "brief": "The owner of Lantern House has a problem: the town is preparing for its busiest festival, yet her hotel is selling fewer rooms. She wants to cut every room price by 20% before the next weekend. The front desk blames a new competitor; the marketing team asks for a bigger advertising budget. You have been hired to decide what to investigate and what to do first. You have ₹60,000 for a two-week intervention, cannot add rooms, and must protect guest experience. Separate the symptom from its possible causes. A convincing proposal secures the hotel’s support for repairing your tram connection.",
+    "evidence": [
+      {
+        "id": "E1",
+        "title": "Demand versus conversion",
+        "text": "Last month: 10,000 booking-page visits, 5% completed a booking, 500 bookings. This month: 12,000 visits, 3% completed, 360 bookings. Measurement definitions and attribution are unchanged."
+      },
+      {
+        "id": "E2",
+        "title": "Channel and service clues",
+        "text": "The direct website accounts for most lost bookings. A new payment step launched six weeks ago; 22 of 40 surveyed abandoning visitors mention payment trouble. This is a small, non-random sample. Average review score stayed 4.4/5; competitor prices are 5% lower."
+      },
+      {
+        "id": "E3",
+        "title": "Money and experiments",
+        "text": "Average room price ₹3,000; variable occupied-room cost ₹1,200. A checkout fix costs ₹20,000. A broad promotion costs ₹50,000 before discounts. A blanket 20% price cut reduces contribution per occupied room from ₹1,800 to ₹1,200."
+      }
+    ],
+    "twist": "The checkout fix raises website conversion from 3% to 4%, but paid traffic is now 25% more expensive. The owner asks whether to scale advertising immediately. Update your recommendation, name the missing information and define a stop rule.",
+    "reviewFocus": "Distinguish demand from conversion; use the funnel and contribution margin. Accept competing hypotheses if supported; a survey is evidence, not proof.",
+    "fictional": true
+  },
+  "fair-fare": {
+    "id": "fair-fare",
+    "title": "How many pens does Kota buy?",
+    "skill": "Market sizing",
+    "role": "Category expansion lead",
+    "person": "Dev · stationery distributor",
+    "brief": "A stationery distributor is considering a new warehouse in Kota, Rajasthan. Before committing, its founder asks how many pens consumers might buy in one year. There is no authoritative market-size number in this exercise. You must create a transparent estimate, choose segments, avoid counting the same student twice and explain what would change the estimate most. The warehouse decision depends on the range, not an impressive-looking precise answer. Clarify the geography, time period and whether you mean consumer purchases or wholesale shipments. Use the provided planning assumptions or propose alternatives and label them. A defensible estimate earns the supplier’s repair support.",
+    "evidence": [
+      {
+        "id": "E1",
+        "title": "Scope and starting assumptions",
+        "text": "Fictional planning inputs, not demographic facts: 1,000,000 residents, including 200,000 resident students; another 100,000 non-resident students live in the study area during coaching season. Count annual consumer pen purchases within this defined area."
+      },
+      {
+        "id": "E2",
+        "title": "Usage assumptions to challenge",
+        "text": "Assume 2–4 pens per student per active month, with 8–10 active months. For the other 800,000 residents, assume 30–50% buy pens and average 4–8 pens each annually. Institutional purchases may overlap these purchases; do not add them automatically."
+      },
+      {
+        "id": "E3",
+        "title": "Warehouse economics",
+        "text": "Contribution is ₹2 per pen sold through this distributor. Extra annual warehouse fixed cost is ₹24 lakh. Market share is uncertain, with planning scenarios of 5%, 10% and 20%. Total city demand is not this distributor’s sales."
+      }
+    ],
+    "twist": "The founder now expects only 5% share in year one. Coaching attendance may fall by 20%. Rework the range or sensitivity and explain whether to lease the warehouse, pilot a smaller operation, or delay.",
+    "reviewFocus": "Reward a segmented, dimensionally consistent annual estimate and sensitivity. Do not require one exact number. Distinguish market demand from share and contribution.",
+    "fictional": true
+  },
+  "lost-parcel": {
+    "id": "lost-parcel",
+    "title": "The CEO’s expansion choice",
+    "skill": "Strategic trade-offs",
+    "role": "Acting CEO",
+    "person": "Farah · board chair",
+    "brief": "You run a small luggage-delivery company serving festival visitors. The board wants to expand to a neighbouring city, while the operations team says the current service is already stretched. You can spend ₹12 lakh this quarter. A city launch promises new revenue, while stabilising operations may protect customers you already have. Decide what to prioritise, what assumptions deserve testing, and what you would tell the board. You may propose a staged option instead of accepting either team’s plan. The delivery company will commit vehicles to the festival only when your plan is credible.",
+    "evidence": [
+      {
+        "id": "E1",
+        "title": "Current service",
+        "text": "8,000 orders/month; revenue ₹180/order and variable cost ₹130/order. On-time delivery fell from 94% to 82%. Refund and support costs are not included in that variable-cost figure."
+      },
+      {
+        "id": "E2",
+        "title": "Expansion proposal",
+        "text": "A full launch costs ₹10 lakh. Forecast: 3,000 monthly orders after three months, with ₹40 contribution/order before local overhead. Forecast is based on 20 merchant interviews, not paid demand."
+      },
+      {
+        "id": "E3",
+        "title": "Alternatives",
+        "text": "Dispatch improvements cost ₹4 lakh and are expected—but not proven—to restore 92% on-time delivery. A limited city pilot costs ₹3 lakh. The same two managers would oversee both operational repair and expansion."
+      }
+    ],
+    "twist": "A competitor announces its city launch in six weeks, but your paid pilot attracts only half the forecast orders. Explain whether that changes your sequence and which evidence should outweigh competitive pressure.",
+    "reviewFocus": "Consider capacity, contribution, unreliable forecasts, reversibility and an explicit pilot decision rule.",
+    "fictional": true
+  },
+  "balanced-load": {
+    "id": "balanced-load",
+    "title": "A price cut with a hidden cost",
+    "skill": "Unit economics",
+    "role": "Retail category manager",
+    "person": "Kabir · shop owner",
+    "brief": "A festival shop sells reusable lantern kits. A competitor has lowered its price, and your owner wants to match it immediately. You must protect contribution while keeping customers. Your task is to compare a blanket discount, a smaller targeted offer and a bundle. Decide what to test and how to avoid mistaking more sales for a healthier business. You have one week and ₹15,000 for the test. Your recommendation determines whether the shop can fund the tram’s discounted repair charge.",
+    "evidence": [
+      {
+        "id": "E1",
+        "title": "Today’s business",
+        "text": "1,000 kits/week at ₹200 each. Variable cost ₹120/kit. Current weekly contribution before fixed costs is ₹80,000. Inventory capacity is 1,400 kits/week."
+      },
+      {
+        "id": "E2",
+        "title": "Proposed discount",
+        "text": "A cut to ₹170 reduces contribution to ₹50/kit. Marketing predicts a 30% volume lift, but has no experiment. Matching the existing contribution would require 1,600 kits, beyond current capacity."
+      },
+      {
+        "id": "E3",
+        "title": "Customer clues",
+        "text": "A convenience sample of 30 shoppers includes 12 citing price and 10 asking for easy assembly. A printed instruction insert costs ₹5/kit. A targeted voucher can be limited to new customers; track cannibalisation separately."
+      }
+    ],
+    "twist": "A targeted voucher increases new-customer orders but half its users would have bought at full price. Revise the experiment or stop rule using incremental contribution rather than gross order growth.",
+    "reviewFocus": "Check contribution arithmetic and capacity; accept alternatives that quantify cannibalisation and test incrementality.",
+    "fictional": true
+  },
+  "mixed-signals": {
+    "id": "mixed-signals",
+    "title": "The dashboard says demand is down",
+    "skill": "Evidence and causality",
+    "role": "Operations analyst",
+    "person": "Meera · marketplace lead",
+    "brief": "A local marketplace reports a 25% fall in orders after adding a delivery fee. The sales team wants to remove the fee; finance says that would turn every order unprofitable. You must identify what the chart does and does not establish, then recommend an intervention. Several things changed at once. Build a case that separates a plausible explanation from evidence that would justify action. Your analysis will determine whether the marketplace funds reopening the tram’s blocked lane.",
+    "evidence": [
+      {
+        "id": "E1",
+        "title": "Before and after",
+        "text": "Orders fell from 4,000 to 3,000/week. A ₹20 delivery fee launched on the same day as a checkout redesign. Advertising spend also fell 20% that week; no control group was retained."
+      },
+      {
+        "id": "E2",
+        "title": "Funnel breakdown",
+        "text": "Visits fell 10%; add-to-cart rate stayed similar; checkout completion fell from 50% to 42%. Mobile devices account for most of the checkout drop. The time windows contain different holiday dates."
+      },
+      {
+        "id": "E3",
+        "title": "Options and cost",
+        "text": "Removing the fee costs ₹20/order if volume is unchanged. A mobile checkout repair costs ₹30,000 once. A two-week randomised fee test can hold checkout design fixed, but needs margin and customer-support guardrails."
+      }
+    ],
+    "twist": "A mobile repair restores completion but orders remain below the old peak. The fee test finds more orders with free delivery and lower total contribution. Explain what you would change and what you would keep.",
+    "reviewFocus": "Avoid claiming causality from simultaneous changes; compare funnel factors and propose a controlled test with margin guardrails.",
+    "fictional": true
+  },
+  "all-aboard": {
+    "id": "all-aboard",
+    "title": "Who gets the peak-hour tram?",
+    "skill": "Capacity allocation",
+    "role": "Transport operations head",
+    "person": "Ravi · service coordinator",
+    "brief": "Two groups want the same limited festival service: workers need predictable arrival times, while visitors produce higher fares. As operations head, you must allocate capacity without creating a service that is financially attractive but unreliable or inaccessible. You have ten tram departures to allocate, not an unlimited fleet. Propose a timetable principle, a fallback for disruption and a measure of success. Different stakeholders will challenge your choice. A clear plan secures the crew needed to reopen your route.",
+    "evidence": [
+      {
+        "id": "E1",
+        "title": "Demand and capacity",
+        "text": "Each departure carries 40 passengers. Peak demand: 240 workers and 220 visitors. All ten departures together provide only 400 seats against demand of 460."
+      },
+      {
+        "id": "E2",
+        "title": "Value and constraints",
+        "text": "Workers pay ₹10 and require arrival by 09:00. Visitors pay ₹25 and can accept a later departure. At least 200 worker seats are contractually required. Operating cost is ₹500/departure."
+      },
+      {
+        "id": "E3",
+        "title": "Options",
+        "text": "Two off-peak departures can be added at ₹650 each with a 30-minute delay. A reservation system costs ₹2,000 for the trial. Unused reserved seats can be released five minutes before departure. Wheelchair capacity must remain available."
+      }
+    ],
+    "twist": "Actual worker attendance is 15% below reservations while visitors are queuing. Revise the seat-release rule without undermining reliable access, and explain what you would measure before changing the contract.",
+    "reviewFocus": "Check total capacity and required access, compare revenue and cost, handle no-shows and preserve service guardrails.",
+    "fictional": true
+  },
+  "waterworks": {
+    "id": "waterworks",
+    "title": "A city budget with no easy answer",
+    "skill": "Resource prioritisation",
+    "role": "Public-service programme lead",
+    "person": "Sana · town engineer",
+    "brief": "The festival district has recurring water interruptions. You are responsible for a ₹10 lakh improvement budget. Residents want reliable supply now; officials prefer a visible new installation. Choose a portfolio or sequence and explain whose needs may be underserved. You must work with uncertain evidence, not assume that the most visible project has the most impact. A credible plan releases engineering support for your tram repair.",
+    "evidence": [
+      {
+        "id": "E1",
+        "title": "Three proposals",
+        "text": "Leak repairs cost ₹4 lakh, estimated saving 20–30% of current losses. A new storage tank costs ₹8 lakh and adds six hours of backup. Smart meters cost ₹3 lakh and improve loss measurement but do not themselves add water."
+      },
+      {
+        "id": "E2",
+        "title": "Current evidence",
+        "text": "Interruptions affect 1,200 households. Two streets account for 60% of complaints, but reporting access is unequal. Measured leakage is based on only three days of observation."
+      },
+      {
+        "id": "E3",
+        "title": "Delivery constraints",
+        "text": "Repair crews can finish in three weeks. The tank needs four months and a permit. The festival begins in six weeks. Emergency water access for the clinic must continue during any works."
+      }
+    ],
+    "twist": "A one-week audit finds losses lower than expected, but clinic outages longer than residents reported. Explain how you would update priorities rather than defend the original plan.",
+    "reviewFocus": "Use budget, timing, evidence quality and distribution of impact. Require a measurement and contingency plan.",
+    "fictional": true
+  },
+  "word-on-street": {
+    "id": "word-on-street",
+    "title": "The announcement that could backfire",
+    "skill": "Crisis decisions",
+    "role": "Customer experience head",
+    "person": "Nila · customer support lead",
+    "brief": "A tram route is disrupted hours before the festival. Social posts claim the entire service is cancelled, although only one section is closed. As customer experience head, decide what to say, who needs a different message and what action users should be able to take after reading it. You must avoid both false reassurance and an unnecessarily alarming announcement. Write the customer-facing message inside your recommendation and explain the operating decisions behind it.",
+    "evidence": [
+      {
+        "id": "E1",
+        "title": "Confirmed service facts",
+        "text": "The east section is closed from 18:00 to 20:00. The north replacement stop remains open. The accessible ramp is on the north side. Repair completion after 20:00 has not yet been confirmed."
+      },
+      {
+        "id": "E2",
+        "title": "Users and channels",
+        "text": "Visitors are checking social posts; older residents use the station board. Some passengers cannot use stairs. Support is receiving 80 enquiries/hour and can answer only 30."
+      },
+      {
+        "id": "E3",
+        "title": "Commitments",
+        "text": "The next official status update can be issued at 19:30. Refunds are available for disrupted tickets. No replacement arrival-time guarantee has been authorised."
+      }
+    ],
+    "twist": "At 19:30 repairs are still not confirmed, and a popular account repeats the cancellation claim. Give the updated message and the practical escalation you would make.",
+    "reviewFocus": "Use accurate facts, audience access, concrete next actions and honest uncertainty. Do not award for polished language alone.",
+    "fictional": true
+  },
+  "night-market": {
+    "id": "night-market",
+    "title": "Sell out—or be left with stock?",
+    "skill": "Forecasting and inventory",
+    "role": "Marketplace category lead",
+    "person": "Asha · market organiser",
+    "brief": "You must decide how many lantern packs to order for a festival market. Last year sold out, but this year the forecast is uncertain and unsold stock cannot all be returned. Suppliers offer a cheap large commitment or a smaller order with expensive replenishment. Explain a decision that accounts for both upside and downside. The supplier will use your plan to decide which delivery support it can commit to your tram route.",
+    "evidence": [
+      {
+        "id": "E1",
+        "title": "Demand range",
+        "text": "Planning scenarios: 600 packs (30%), 1,000 (50%), or 1,400 (20%). These are team estimates, not measured probabilities. Last year sales were capped by 800 packs of stock, so observed sales are not unconstrained demand."
+      },
+      {
+        "id": "E2",
+        "title": "Economics",
+        "text": "Sell at ₹100/pack. Initial order cost ₹55; unsold packs salvage ₹20. Emergency replenishment costs ₹75/pack and arrives after one day, if available."
+      },
+      {
+        "id": "E3",
+        "title": "Limits",
+        "text": "₹55,000 cash available for the initial order. Lead time is five days. Two vendors can take pre-orders before you commit; a heavy-rain forecast may change demand."
+      }
+    ],
+    "twist": "Pre-orders reach 500 but come mostly from existing customers, and rain risk rises. Update your order or replenishment plan and say which uncertainty remains unresolved.",
+    "reviewFocus": "Distinguish censored sales from demand, consider inventory downside, cash and value of information; allow multiple reasoned order quantities.",
+    "fictional": true
+  },
+  "storm-window": {
+    "id": "storm-window",
+    "title": "The CEO and the storm forecast",
+    "skill": "Decisions under uncertainty",
+    "role": "Festival company CEO",
+    "person": "Imran · event director",
+    "brief": "Your company runs an outdoor festival. Cancelling too early sacrifices revenue; waiting too long can strand customers. You must decide between continuing outdoors, moving indoors or delaying. The weather probability is uncertain and the indoor venue has limited capacity. Explain your decision as of now, the trigger that would change it and how you would communicate uncertainty. A justified contingency releases route support from the event team.",
+    "evidence": [
+      {
+        "id": "E1",
+        "title": "Forecast and losses",
+        "text": "Estimated storm chance is 30%, with forecasters giving a plausible 20–50% range. Outdoor contribution would be ₹8 lakh if dry and a ₹10 lakh loss if storm operations are cancelled. Expected value alone does not capture safety or reputational effects."
+      },
+      {
+        "id": "E2",
+        "title": "Indoor option",
+        "text": "An indoor move yields an estimated ₹3 lakh contribution regardless of rain, fits 70% of ticket holders and requires a fair allocation/refund policy. Decision deadline is tomorrow noon."
+      },
+      {
+        "id": "E3",
+        "title": "Non-negotiables",
+        "text": "The safety officer can stop outdoor operation at a specified wind threshold. No revenue objective overrides that stop. A newer forecast arrives six hours before the decision deadline."
+      }
+    ],
+    "twist": "The new forecast says 45% storm risk. A sponsor offers ₹2 lakh to stay outdoors but cannot change the safety threshold. Revise the decision and explicitly separate financial incentives from safety constraints.",
+    "reviewFocus": "Discuss expected value, forecast uncertainty, safety constraints, capacity and a clear decision trigger.",
+    "fictional": true
+  },
+  "bridge-code": {
+    "id": "bridge-code",
+    "title": "Growth is hiding a trust problem",
+    "skill": "Platform strategy",
+    "role": "Marketplace product head",
+    "person": "Leena · trust operations lead",
+    "brief": "A resale platform is growing quickly but buyers increasingly report that products differ from their listings. Sellers oppose additional checks because they delay sales. As product head, decide where to intervene without treating every seller as equally risky. You have a small review team and must define both a growth metric and a trust guardrail. The platform will fund your route’s final repair once it understands the trade-offs in your proposal.",
+    "evidence": [
+      {
+        "id": "E1",
+        "title": "What the averages hide",
+        "text": "50,000 orders/month; dispute rate rose from 2% to 4%. New sellers generate 20% of orders and 60% of disputes. Older sellers vary by category; seller age is not proof of wrongdoing."
+      },
+      {
+        "id": "E2",
+        "title": "Costs and capacity",
+        "text": "Average dispute handling costs ₹400 excluding refunds. Human review capacity is 2,000 listings/month. Mandatory review of every listing would exceed capacity and add days of delay."
+      },
+      {
+        "id": "E3",
+        "title": "Candidate interventions",
+        "text": "Risk-based checks, clearer listing requirements and staged payouts are available. Each can inconvenience legitimate sellers. A trial must measure false positives, dispute rate and seller conversion, not just total blocked listings."
+      }
+    ],
+    "twist": "The pilot lowers disputes but also blocks legitimate new sellers disproportionately. Explain how to revise the policy, inspect the measurement and offer an appeal route.",
+    "reviewFocus": "Use segment rates, constrained capacity, causal evaluation and false-positive costs. Do not endorse treating a proxy as conclusive evidence.",
+    "fictional": true
+  },
+  "across-the-river": {
+    "id": "across-the-river",
+    "title": "The network you cannot build all at once",
+    "skill": "Portfolio strategy",
+    "role": "Transport network CEO",
+    "person": "Mira · festival board",
+    "brief": "The festival has proved demand for tram travel, and the board wants a permanent network. You can fund only two improvements this year. One proposal reaches more riders, one improves reliability, and one improves access for an underserved area. Recommend a sequence, explain what you would decline for now and identify what evidence would reverse that choice. The final route benefit depends on a defensible decision—not on pleasing every stakeholder.",
+    "evidence": [
+      {
+        "id": "E1",
+        "title": "Investment options",
+        "text": "Central extension: ₹8 crore, forecast 5,000 trips/day. Reliability programme: ₹4 crore, expected cancellations fall from 12% to 5%. Accessible river link: ₹6 crore, forecast 2,000 trips/day and essential access for one underserved district."
+      },
+      {
+        "id": "E2",
+        "title": "Budget and evidence",
+        "text": "Annual capital ceiling ₹10 crore. Forecasts are based on surveys, not ticketed trials. Operating costs differ and have not yet been estimated. Fare revenue alone is not the agreed public-service objective."
+      },
+      {
+        "id": "E3",
+        "title": "Possible sequencing",
+        "text": "A temporary bus link can test river demand for ₹30 lakh. Reliability work takes four months; new construction takes 18 months. An independent accessibility review is available in six weeks."
+      }
+    ],
+    "twist": "The bus pilot exceeds forecast demand, but construction costs rise by 20%. Rebuild the portfolio within the budget and explain which decision should wait for operating-cost evidence.",
+    "reviewFocus": "Respect budget feasibility, compare impact and reliability, identify missing operating costs and use reversible pilots. Multiple portfolios can be justified.",
+    "fictional": true
+  }
+}

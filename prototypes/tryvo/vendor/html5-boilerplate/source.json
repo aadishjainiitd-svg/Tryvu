@@ -1,0 +1,6 @@
+{
+  "version": "9.0.1",
+  "source": "https://github.com/h5bp/html5-boilerplate/releases/download/v9.0.1/html5-boilerplate_v9.0.1.zip",
+  "sha256": "f8b02fecb4532381a49a2eb9f481cf46f4e3a420f09587ce5cc6309d9ec67076",
+  "retained": "index.html adapted; css/style.css retained as css/boilerplate.css; 404.html, robots.txt, .editorconfig and MIT licence retained; original starter index archived; optional webpack files not used."
+}

@@ -1,0 +1,77 @@
+/* Authored business cases, live client discussion, and server-reviewed recommendations. */
+window.TryvoCases=(()=>{
+ 'use strict';
+ const E=window.TryvoRescueEngine,DATA=window.TryvoCaseData;
+ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const labels={recommendation:'Your decision',evidence:'Evidence and reasoning',tradeoff:'Alternative and trade-off',test:'Your next test'};
+ const minima={recommendation:40,evidence:60,tradeoff:30,test:30};
+ const prompts={recommendation:'What would you do, and what outcome are you trying to change?',evidence:'Use the exhibits. Show a calculation or explain which facts support your decision. Label assumptions.',tradeoff:'What else could you do? What would you sacrifice, and why is that acceptable?',test:'What would you measure next? Set a threshold that would make you reconsider.'};
+ let active=null;
+ const id=()=>crypto.randomUUID();
+ const routeKey=d=>JSON.stringify([d.path,d.boarding]);
+ const button=(label,action,secondary=false)=>`<button type="button" class="button ${secondary?'secondary':''}" data-case="${action}">${label}</button>`;
+ function fresh(){return {initial:'',decision:{recommendation:'',evidence:'',tradeoff:'',test:''},messages:[],turns:0,phase:'brief',reviews:[],sessionId:null};}
+ function live(a){return active===a&&document.querySelector('#dialog')?.open&&document.querySelector('[data-case-root]')?.dataset.caseRoot===a.token;}
+ function save(a){a.api.save();}
+ function open(l,d,kind,api){
+  const q=kind==='obstacle'?d.obstacle:d.puzzle;
+  if(q.solved&&(!q.case?.review?.accepted||q.case?.offline)){api.offline();return;}
+  if(kind==='arrival'&&q.case?.review?.accepted&&q.case.routeKey!==routeKey(d)){q.case=fresh();q.solved=false;}
+  q.case||=fresh();const c=q.case;if(!q.solved)c.offline=false;
+  if(kind==='arrival'&&c.review?.accepted&&c.routeKey===routeKey(d)){q.solved=true;api.save();}
+  active={l,d,kind,q,c,api,token:id(),busy:false,error:c.pending?'A request was saved before this window closed. Retry it to recover the response.':'',phase:c.review?'review':c.phase||'brief'};
+  const a=active;
+  api.modal(esc(DATA[l.id].title),`<div data-case-root="${a.token}"></div>`);
+  document.querySelector('#dialog').classList.add('case-dialog');
+  draw(a);
+ }
+ function benefit(a){return a.kind==='arrival'?'Complete the journey and earn a 1-credit rebate. First review accepted without a nudge: 2 credits.':`Reopen the shortcut${a.l.mode==='discount'?' and reduce its toll to 1 credit':a.l.mode==='credits'?' and receive 2 travel credits':''}. First review accepted without a nudge: +1 extra credit.`;}
+ function exhibits(a){return `<div class="case-exhibits">${DATA[a.l.id].evidence.map(e=>`<details><summary><span>${esc(e.id)}</span>${esc(e.title)}</summary><p>${esc(e.text)}</p></details>`).join('')}</div>`;}
+ function brief(a){const x=DATA[a.l.id];return `<div class="case-brief"><span class="case-eyebrow">${esc(x.role)} · ${esc(x.skill)}</span><h3>${a.kind==='arrival'?'A new development. Same decision, new stakes.':'The client needs a decision. Yours.'}</h3><p>${esc(a.kind==='arrival'?x.twist:x.brief)}</p>${a.kind==='arrival'?`<details><summary>Original brief and your earlier decision</summary><p>${esc(x.brief)}</p><p><strong>Your decision:</strong> ${esc(a.d.obstacle.case?.decision?.recommendation||'You reopened the route using the offline exercise.')}</p></details>`:''}</div>`;}
+ function reviewHTML(r){return `<div class="case-verdict ${r.accepted?'case-pass':''}"><span class="case-eyebrow">${esc(r.source)} · ${r.score}/8 reasoning points</span><h3>${r.accepted?'Your recommendation is ready to act on.':'Give this decision another look.'}</h3><p>${esc(r.summary)}</p></div><div class="case-rubric">${Object.entries(r.rubric).map(([k,v])=>`<article><div><strong>${esc({framing:'Clear decision',evidence:'Use of evidence',tradeoffs:'Trade-offs',test:'Next test'}[k]||k)}</strong><span>${v.score}/2</span></div><p>${esc(v.feedback)}</p></article>`).join('')}</div><div class="case-consequence"><strong>If you take this decision…</strong><p>${esc(r.consequence)}</p><small>A simulated consequence, not a forecast.</small></div>`;}
+ function draw(a){
+  if(!live(a))return;
+  const c=a.c,x=DATA[a.l.id],steps=['brief','investigate','recommend','review'],n=steps.indexOf(a.phase);
+  let body='';
+  if(a.phase==='brief')body=`${brief(a)}<form data-case-form="start"><label for="case-initial">Your first take</label><p class="case-field-help">Before opening the evidence: what might be happening, and what would you investigate first?</p><textarea id="case-initial" data-case-field="initial" minlength="30" maxlength="1800" required rows="3" placeholder="My initial hypothesis is…">${esc(c.initial)}</textarea><small>At least 30 characters. This first judgment stays in your contribution record.</small><button class="button" type="submit">Record my take & open evidence →</button></form>`;
+  if(a.phase==='investigate')body=`${brief(a)}<details class="case-written-record"><summary>Your first take</summary><p>${esc(c.initial)}</p></details><h3 class="case-section-title">Your evidence desk</h3>${exhibits(a)}<section class="case-conversation"><div class="case-client-heading"><div><span class="case-avatar" aria-hidden="true">${esc(x.person[0])}</span><div><strong>${esc(x.person)}</strong><small>AI client · ${c.turns||0}/8 questions used</small></div></div><span class="case-live">Groq</span></div><p class="case-field-help">Ask for clarification, challenge an assumption or probe a trade-off. The client uses these fictional exhibits; missing information stays unknown.</p><div class="case-messages" aria-live="polite">${c.messages.length?c.messages.map(m=>`<article class="case-message ${m.role==='user'?'case-you':''}"><strong>${m.role==='user'?'You':esc(x.person)}</strong><p>${esc(m.text)}</p>${m.sources?.length?`<small>Evidence: ${m.sources.map(esc).join(', ')}</small>`:''}</article>`).join(''):'<p class="case-chat-empty">What would you ask before committing to a decision?</p>'}</div><form data-case-form="chat"><label for="case-question">Ask the client <span>(optional)</span></label><textarea id="case-question" data-case-field="question" minlength="5" maxlength="1400" rows="2" required placeholder="What changed in the period shown in E1?">${esc(c.question||'')}</textarea><div class="case-chat-actions"><small>Your case text is sent to Groq. Use fictional information.</small><button class="button secondary" type="submit" ${c.turns>=8?'disabled':''}>Ask client ↗</button></div></form></section><div class="case-actions">${button('Give me a thinking nudge','nudge',true)}${button('Build my recommendation →','recommend')}</div>${a.q.hint?'<p class="case-nudge">Name the goal. Compare what changed with what did not. Choose one alternative, then define a test that could prove you wrong. Opening this nudge removes the first-try bonus.</p>':''}`;
+  if(a.phase==='recommend')body=`<div class="case-brief"><span class="case-eyebrow">Your decision memo</span><h3>${a.kind==='arrival'?'Respond to the new development.':'Commit to a recommendation.'}</h3><p>${esc(a.kind==='arrival'?x.twist:'There can be several defensible answers. Be specific about your evidence, your trade-off and what would change your mind.')}</p></div>${exhibits(a)}<form data-case-form="review">${Object.keys(labels).map(k=>`<div class="case-field"><label for="case-${k}">${labels[k]}</label><p class="case-field-help">${prompts[k]}</p><textarea id="case-${k}" data-case-decision="${k}" required minlength="${minima[k]}" maxlength="2400" rows="3">${esc(c.decision[k])}</textarea><small>At least ${minima[k]} characters.</small></div>`).join('')}<p class="case-review-rule">Review: clear decision, evidence, trade-offs and a next test. Each is scored 0–2. Unlock at 5/8 or more, with no missing dimension. This is AI feedback on this case, not an ability score.</p><div class="case-actions">${button('← Back to evidence','investigate',true)}<button class="button" type="submit">Submit my recommendation</button></div></form>`;
+  if(a.phase==='review'&&c.review)body=`${reviewHTML(c.review)}<p class="case-followup"><strong>Keep thinking:</strong> ${esc(c.review.nextQuestion)}</p>${c.review.accepted?`<div class="case-reward"><strong>✓ ${a.kind==='obstacle'?'Shortcut unlocked':'Arrival decision recorded'}</strong><span>+${c.awarded||0} game points awarded · ${a.q.reward||0} travel credit${a.q.reward===1?'':'s'}</span></div><div class="case-actions">${button(a.kind==='obstacle'?'Return to my tram →':'Finish my journey →','continue')}</div>`:`<div class="case-actions">${button('Revisit the evidence','investigate',true)}${button('Revise my recommendation','recommend')}</div><p class="case-field-help">${3-(c.review.attempt||1)} AI reviews remaining in this session. No credits or points were awarded for this review.</p>`}<details class="case-written-record"><summary>Your first take and final memo</summary><p>${esc(c.initial)}</p>${Object.entries(c.decision).map(([k,v])=>`<h4>${labels[k]}</h4><p>${esc(v)}</p>`).join('')}</details>`;
+  document.querySelector('[data-case-root]').innerHTML=`<div class="case-meta"><span>Fictional training case</span><span>${a.kind==='arrival'?'Arrival · new development':'Route stop · client decision'}</span></div><ol class="case-steps" aria-label="Case progress">${['First take','Investigate','Decide','Feedback'].map((label,i)=>`<li ${i===n?'aria-current="step"':''} class="${i<=n?'case-step-active':''}"><b>${i+1}</b>${label}</li>`).join('')}</ol><p class="case-benefit">${esc(benefit(a))}</p><div class="case-body">${body}</div><div class="case-request-status" role="status">${a.busy?'<span class="case-spinner" aria-hidden="true"></span> The client is considering your response… You can close this window; your draft is saved.':''}</div>${a.error?`<div class="case-error" role="alert"><p>${esc(a.error)}</p>${c.pending?button('Retry saved request','retry',true):''}${button('Start a new case session','restart',true)}</div>`:''}<div class="case-footer"><span>Draft saved on this device · local prototype</span>${c.review?.accepted?'':button('Use offline route exercise','offline',true)}</div>`;
+  if(a.busy)document.querySelectorAll('[data-case-root] button,[data-case-root] textarea').forEach(el=>el.disabled=true);
+ }
+ function phase(a,p){a.phase=p;a.c.phase=p;a.error='';save(a);draw(a);document.querySelector('#dialog')?.scrollTo({top:0});document.querySelector('[data-case-root] textarea,[data-case-root] button')?.focus({preventScroll:true});}
+ async function request(path,body){const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),47000);try{const r=await fetch('/api/cases/'+path,{method:'POST',headers:{'Content-Type':'application/json','X-Tryvo-Client':'case-workbench'},body:JSON.stringify(body),signal:controller.signal});let data;try{data=await r.json();}catch{throw Error('The AI service is not running on this preview. Start the Tryvo server, or use the offline route exercise.');}if(!r.ok)throw Error(data.error||'The request could not complete. Your draft is saved.');return data;}catch(e){if(e.name==='AbortError')throw Error('The response took too long. Retry the saved request; a completed response will not be charged or rewarded twice.');throw e;}finally{clearTimeout(timer);}}
+ async function perform(a,type){
+  if(a.busy)return;
+  const c=a.c;
+  if(!c.pending){let body={sessionId:c.sessionId,requestId:id()};if(type==='start')body={level:a.l.id,kind:a.kind,requestId:id(),initial:c.initial,...(a.kind==='arrival'&&a.d.obstacle.case?.sessionId?{parentSession:a.d.obstacle.case.sessionId}:{})};if(type==='chat')body.message=c.question;if(type==='review')body.decision={...c.decision};c.pending={type,body};save(a);}
+  const pending=c.pending;a.busy=true;a.error='';draw(a);
+  try{
+   const r=await request(pending.type,pending.body);
+   if(!a.api.isCurrent())return;
+   if(pending.type==='start'){c.initial=r.initial||pending.body.initial;c.sessionId=r.id;c.messages=r.messages;c.turns=r.turns;c.phase='investigate';a.phase='investigate';}
+   if(pending.type==='chat'){c.messages.push({role:'user',text:pending.body.message},{role:'assistant',text:r.reply,sources:r.sources});c.turns=r.turns;c.question='';}
+   if(pending.type==='review'&&!c.reviews.some(v=>v.receipt===r.receipt)){
+    c.decision={...pending.body.decision};c.review=r;c.reviews.push(r);c.phase='review';a.phase='review';c.routeKey=routeKey(a.d);a.q.solved=r.accepted;a.q.feedback=r.summary;
+    a.q.tries.push({date:new Date().toISOString(),answer:{caseReceipt:r.receipt},ok:r.accepted,feedback:r.summary});
+    c.awarded=a.api.submit({ok:r.accepted,feedback:r.summary});
+   }
+   c.pending=null;save(a);if(!live(a)&&a.api.isCurrent())a.api.render(false);
+  }catch(e){a.error=e.message||'Connection unavailable. Your written draft is saved.';}
+  finally{a.busy=false;draw(a);if(live(a)){if(a.error)document.querySelector('.case-error')?.scrollIntoView({block:'nearest'});else if(pending.type==='chat')document.querySelector('.case-messages')?.lastElementChild?.scrollIntoView({block:'nearest'});else document.querySelector('#dialog')?.scrollTo({top:0});}}
+ }
+ document.addEventListener('input',e=>{const a=active;if(!a||!live(a))return;const field=e.target.dataset.caseField,k=e.target.dataset.caseDecision;if(field){a.c[field]=e.target.value;save(a);}if(k){a.c.decision[k]=e.target.value;save(a);}});
+ document.addEventListener('submit',e=>{const form=e.target.closest('[data-case-form]');if(!form||!active||!live(active))return;e.preventDefault();if(form.reportValidity())perform(active,form.dataset.caseForm);});
+ document.addEventListener('click',e=>{const b=e.target.closest('[data-case]'),a=active;if(!b||!a||!live(a)||a.busy)return;const action=b.dataset.case;
+  if(action==='retry'){perform(a,a.c.pending.type);return;}
+  if(action==='restart'){a.q.case={...fresh(),initial:a.c.initial,decision:{...a.c.decision}};a.q.solved=false;a.c=a.q.case;phase(a,'brief');return;}
+  if(action==='offline'){a.c.offline=true;save(a);document.querySelector('#dialog').classList.remove('case-dialog');active=null;a.api.offline();return;}
+  if(action==='continue'){document.querySelector('#dialog').close();active=null;a.api.continue();return;}
+  if(action==='nudge'){a.q.hint=true;save(a);draw(a);return;}
+  if(['investigate','recommend'].includes(action))phase(a,action);
+ });
+ document.querySelector('#dialog').addEventListener('close',()=>{if(!document.querySelector('#dialog').open)document.querySelector('#dialog').classList.remove('case-dialog');});
+ function receipt(r){return [r.obstacle,r.puzzle].filter(q=>q?.case?.review).map(q=>{const c=q.case;return `<div class="case-progress-record"><strong>${esc(DATA[r.level]?.title||'Business case')} · ${c.review.kind==='arrival'?'new development':'initial decision'}</strong><p>${esc(c.review.summary)}</p><p class="caption">${c.offline?'Offline route exercise selected after this review · ':''}${c.review.score}/8 case rubric · ${c.turns||0} AI client questions · ${c.reviews.length} reviews · ${q.hint?'thinking nudge used':'no thinking nudge'} · AI-supported practice</p><details><summary>My decision and specific feedback</summary><p><strong>First take:</strong> ${esc(c.initial)}</p>${Object.entries(c.decision).map(([k,v])=>`<p><strong>${labels[k]}:</strong> ${esc(v)}</p>`).join('')}${reviewHTML(c.review)}</details></div>`;}).join('');}
+ return {open,receipt,routeKey};
+})();

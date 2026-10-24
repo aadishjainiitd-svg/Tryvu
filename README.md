@@ -122,7 +122,19 @@ GROQ_MODEL=openai/gpt-oss-120b
 
 Use a model available to your Groq account. This integration uses **Groq**, not xAI Grok. Requests consume your provider quota and may incur provider charges. With no key, use **Demo** and the explicit **offline route exercise**; the interface never pretends an offline response came from AI.
 
-Serve the application with `server.py`. Opening `index.html` directly, using a generic static server or publishing only to GitHub Pages will not provide the AI endpoints. The example configuration contains no credential.
+Serve the application with `server.py` for local development. Static hosting uses the separate Render backend configured below. The example configuration contains no credential.
+
+### Vercel frontend and Render backend
+
+The hosted frontend at **https://tryvu-tryvo.vercel.app** sends its case and practice-report requests to **https://tryvu-5.onrender.com**. The public API base is defined once in `prototypes/tryvo/js/api-config.js`; localhost development continues to use the local Python server. This is a plain JavaScript site with no build step, so no `NEXT_PUBLIC_API_URL`, `VITE_API_URL` or `REACT_APP_API_URL` variable is needed.
+
+- **Vercel:** deploy `main` with Root Directory `prototypes/tryvo` and Framework Preset **Other**. The existing project can redeploy after the GitHub push.
+- **Render:** deploy the same branch with start command `python prototypes/tryvo/server.py`. If the service Root Directory is `prototypes/tryvo`, use `python server.py`. The server reads Render's `PORT` automatically; `--port` remains available for local use.
+- Set `GROQ_API_KEY` and optionally `GROQ_MODEL` in **Render's** environment. Never put the private key in Vercel frontend JavaScript.
+- Check `https://tryvu-5.onrender.com/api/health`: HTTP 200 with `configured: true` means the server can see its configured key; it does not validate the key with Groq.
+- CORS supports `GET`, `POST`, `OPTIONS`, `Content-Type` and the frontend's `X-Tryvo-Client` header, including API error responses. By default it allows any origin as requested for this prototype. Optionally set `TRYVO_ALLOWED_ORIGINS=https://tryvu-tryvo.vercel.app` in Render to restrict access from browsers; add other exact origins separated by commas if needed.
+
+If automatic deployment is disabled, deploy the latest commit in both dashboards. A Render restart without persistent storage may clear existing case sessions; start a fresh case if an older session is unavailable.
 
 ### A useful first walkthrough
 
@@ -170,7 +182,7 @@ The two case-bank files—`assets/business-cases.json` and `js/case-data.js`—m
 - Real `.env` files are ignored at every directory level. **Only `.env.example` is intended for Git.**
 - API keys remain server-side, outside the served web directory. They are never placed in JavaScript or localStorage.
 - `.tryvo-local/`, local databases, logs and generated AI reports are excluded from version control.
-- Case requests have payload limits, rate limits, response validation and retry caching. The server binds to loopback and rejects unexpected origins and hosts.
+- Case requests have payload limits, rate limits, response validation and retry caching. The server listens on `0.0.0.0`, accepts local and configured Render hosts, and supports optional browser-origin restrictions.
 - Use fictional information. Case text is sent to Groq when you request AI conversation, review or reporting.
 - **Reset Demo** clears browser progress and its saved report. It does not delete the private server-side session store. To remove that store, stop the server and remove the repository's `.tryvo-local` folder.
 - Rotate any API key that has been shared or exposed. A `.gitignore` rule cannot revoke an already exposed credential.
@@ -184,6 +196,8 @@ node prototypes/tryvo/tests/economy-engine.cjs
 node prototypes/tryvo/tests/cases-engine.cjs
 python prototypes/tryvo/tests/cases-server.py
 python prototypes/tryvo/tests/report-server.py
+python prototypes/tryvo/tests/deployment-http.py
+node prototypes/tryvo/tests/api-config.cjs
 ```
 
 For browser checks, install Node.js and Playwright, then start the local server in another terminal:

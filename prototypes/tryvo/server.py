@@ -1,4 +1,4 @@
-"""Local Tryvo server. Standard library only; credentials never enter static files."""
+"""Tryvo web/API server. Standard library only; credentials stay server-side."""
 from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
 import argparse, json, os, sqlite3, threading, time, uuid, urllib.request, urllib.error
@@ -154,14 +154,31 @@ class Handler(SimpleHTTPRequestHandler):
     def __init__(self,*args,**kwargs):super().__init__(*args,directory=str(WEB),**kwargs)
     def log_message(self,*args):pass
     def end_headers(self):
+        origin=self.headers.get('Origin')
+        allowed=os.environ.get('TRYVO_ALLOWED_ORIGINS','*').strip()
+        if self.allowed_origin(origin) and (allowed=='*' or origin):
+            self.send_header('Access-Control-Allow-Origin','*' if allowed=='*' else origin)
+        self.send_header('Vary','Origin')
+        self.send_header('Access-Control-Allow-Methods','GET, POST, OPTIONS')
+        self.send_header('Access-Control-Allow-Headers','Content-Type, X-Tryvo-Client')
         self.send_header('X-Content-Type-Options','nosniff');self.send_header('Referrer-Policy','same-origin');self.send_header('Cache-Control','no-store');super().end_headers()
     def json(self,status,data):
         raw=json.dumps(data,ensure_ascii=False).encode();self.send_response(status);self.send_header('Content-Type','application/json; charset=utf-8');self.send_header('Content-Length',str(len(raw)));self.end_headers();self.wfile.write(raw)
     def valid_host(self):
         port=self.server.server_port
-        return self.headers.get('Host') in (f'127.0.0.1:{port}',f'localhost:{port}')
+        allowed={f'127.0.0.1:{port}',f'localhost:{port}','tryvu-5.onrender.com'}
+        render_host=os.environ.get('RENDER_EXTERNAL_HOSTNAME','').strip()
+        if render_host:allowed.add(render_host)
+        return self.headers.get('Host') in allowed
+    def allowed_origin(self,origin):
+        allowed=os.environ.get('TRYVO_ALLOWED_ORIGINS','*').strip()
+        return not origin or allowed=='*' or origin in {x.strip().rstrip('/') for x in allowed.split(',')}
+    def do_OPTIONS(self):
+        if not self.valid_host():return self.json(403,{'error':'Host not allowed.'})
+        if not self.allowed_origin(self.headers.get('Origin')):return self.json(403,{'error':'Origin not allowed.'})
+        self.send_response(204);self.send_header('Content-Length','0');self.end_headers()
     def do_GET(self):
-        if not self.valid_host():return self.json(403,{'error':'Local access only.'})
+        if not self.valid_host():return self.json(403,{'error':'Host not allowed.'})
         route=urlsplit(self.path).path
         if route=='/api/health':return self.json(200,{'configured':bool(config()['GROQ_API_KEY']),'provider':'Groq','model':config()['GROQ_MODEL'] or 'openai/gpt-oss-120b'})
         decoded=unquote(route)
@@ -173,9 +190,8 @@ class Handler(SimpleHTTPRequestHandler):
         super().do_GET()
     def do_HEAD(self):return self.json(405,{'error':'Use GET.'})
     def do_POST(self):
-        if not self.valid_host():return self.json(403,{'error':'Local access only.'})
-        origin=self.headers.get('Origin');allowed={f'http://127.0.0.1:{self.server.server_port}',f'http://localhost:{self.server.server_port}'}
-        if (origin and origin not in allowed) or self.headers.get('X-Tryvo-Client')!='case-workbench' or self.headers.get('Content-Type','').split(';')[0]!='application/json':return self.json(403,{'error':'Use the local Tryvo workbench.'})
+        if not self.valid_host():return self.json(403,{'error':'Host not allowed.'})
+        if not self.allowed_origin(self.headers.get('Origin')) or self.headers.get('X-Tryvo-Client')!='case-workbench' or self.headers.get('Content-Type','').split(';')[0]!='application/json':return self.json(403,{'error':'Use the Tryvo workbench.'})
         try:
             length=int(self.headers.get('Content-Length','0'))
             if not 0<length<=24000:raise Problem('Request is too large.',413)
@@ -187,7 +203,7 @@ class Handler(SimpleHTTPRequestHandler):
         except Exception:self.json(500,{'error':'The local case service could not save this response. Your browser draft is kept.'})
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('--port',type=int,default=8765);args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--port',type=int,default=int(os.environ.get('PORT','8765')));args=parser.parse_args()
     server=ThreadingHTTPServer(('0.0.0.0',args.port),Handler)
     print(f'Tryvo preview: http://0.0.0.0:{args.port}/ — local AI proxy ready',flush=True)
     server.serve_forever()

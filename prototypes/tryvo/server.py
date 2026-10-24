@@ -188,6 +188,6 @@ class Handler(SimpleHTTPRequestHandler):
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--port',type=int,default=8765);args=parser.parse_args()
-    server=ThreadingHTTPServer(('127.0.0.1',args.port),Handler)
-    print(f'Tryvo preview: http://127.0.0.1:{args.port}/ — local AI proxy ready',flush=True)
+    server=ThreadingHTTPServer(('0.0.0.0',args.port),Handler)
+    print(f'Tryvo preview: http://0.0.0.0:{args.port}/ — local AI proxy ready',flush=True)
     server.serve_forever()

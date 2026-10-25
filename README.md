@@ -1,254 +1,161 @@
 <div align="center">
 
 # Tryvo
-### Try. Learn. Own it.
 
-**A world where your decisions move the story forward.**
+### Less autopilot. More adventure.
 
-Plan a tram route. Question a client. Defend a decision. See what happens next.
+A playable world for practising your own judgment in an age of autonomous AI.
 
-[The experience](#the-experience) · [Run locally](#run-locally) · [MindScore](#mindscore-and-your-practice-report) · [Architecture](#architecture) · [Tests](#tests)
+**[Open the live demo →](https://tryvu-tryvo.vercel.app/#explore)** · [Try the guided lessons](https://tryvu-tryvo.vercel.app/#demo) · [Run locally](#run-locally)
+
+12 connected journeys · Fictional business cases · Optional AI client · Offline exercises
 
 </div>
 
-![Tryvo's Festival Rescue world and twelve playable journeys](prototypes/tryvo/screenshots/product-overview.png)
+[![Tryvo: the Lantern Festival map, twelve journeys and a clear first step in the charcoal, lavender and coral interface](prototypes/tryvo/screenshots/readme/explore-desktop.png)](https://tryvu-tryvo.vercel.app/#explore)
 
-## When AI can do the task, what do you still want to do yourself?
+## The idea
 
-Tryvo explores that question through a speculative 2040 world where personal AI agents handle much of everyday life. Its starting hypothesis is simple: some people will still want opportunities to exercise their judgment, make meaningful choices and recognise what they personally contributed.
+**In 2040, your personal AI agent can do almost everything for you. What will you still choose to do yourself?**
 
-The product turns those opportunities into a connected game. A blocked tram route introduces a client who needs a decision. Your recommendation unlocks a connection or travel benefit. At arrival, new information asks you to reconsider. The reward follows a choice you made.
+Tryvo explores one possible consequence: fewer everyday opportunities to exercise judgment and feel ownership of an outcome. Its product hypothesis is that people may value a place where their own decisions matter, even when delegation is available.
 
-This is a working product prototype developed for a Flipkart APM case study. It is not an official Flipkart product, a cognitive assessment or a treatment.
+The Lantern Festival gives that practice a purpose. A client needs a decision; your recommendation reopens a tram connection. You build a route, respond to new information at arrival, and see the choices behind the result.
 
-## The experience
+This is a working prototype for the **Flipkart APM product challenge**, not an official Flipkart product. The 2040 scenario and business cases are fictional; demand and learning benefits remain hypotheses to test.
 
-```text
-Choose a journey → Make your first judgment → Investigate the evidence
-                                                    ↓
-                                    Question the AI client, if useful
-                                                    ↓
-Read specific feedback ← Defend your recommendation
-          ↓
-Unlock the shortcut → Build and run your tram → Respond to a new development
-                                                       ↓
-                                     See your contribution and next practice step
-```
+## Try one complete journey
 
-### One town. Twelve decisions.
+No account is required. Start with **[Explore](https://tryvu-tryvo.vercel.app/#explore) → Start my first journey**.
 
-Festival Rescue connects business reasoning with a playable transport network. Shortcuts, passenger fares, seat limits, repair costs and service stops make the route a decision in its own right. Later journeys introduce larger trams and tighter constraints.
+| Step | What you do | Why it matters |
+| --- | --- | --- |
+| **1. Make a call** | Read “The hotel with empty rooms” and record your first judgment. | Your own attempt comes before AI feedback. |
+| **2. Investigate** | Open the exhibits; question the AI client if useful. | Separate evidence from assumptions. Chat is optional. |
+| **3. Recommend** | State your decision, evidence, trade-off and next test. Revise from feedback. | A defensible recommendation unlocks the shortcut. |
+| **4. Connect** | Build and run a tram route within the distance, budget and seat limits. | Your choices produce a visible consequence. |
+| **5. Respond & reflect** | Address the arrival twist, then open **My progress**. | Compare what you thought, what changed and what you contributed. |
+
+**For a dependable offline walkthrough:** open **[Demo](https://tryvu-tryvo.vercel.app/#demo)** and choose **Your first connection**. Both guided lessons work without AI. Each campaign case also offers **Use offline route exercise** for numeric route practice if the AI service is unavailable. This is an explicit alternative exercise, not a simulated AI response.
+
+Progress is saved in the current browser. Return later using **Continue my journey**; a written first take is saved even before you lay any track.
+
+## Inside the product
+
+### Your judgment starts the journey
+
+The case desk moves through **First take → Investigate → Decide → Feedback**. Each dossier contains a brief, three exhibits and an arrival development. Recommendations have four parts: decision, evidence, trade-off and a test that could change your mind.
+
+<img src="prototypes/tryvo/screenshots/readme/client-case.png" alt="The hotel strategy case asks for an initial judgment before opening the evidence" width="760">
+
+### Decisions become connections
+
+A current-step panel explains the next action. Arrows show every legal adjacent connection equally; they do not pick a solution. Routes have real game constraints, and the tram travels along the path you built, pausing at stops before the next decision opens.
+
+![A partly built route with four riders, live distance and credit counters, and arrows at its current endpoint](prototypes/tryvo/screenshots/readme/route-planning.png)
+
+*This route was opened through the offline exercise. The screenshot shows actual local gameplay, not an AI-reviewed recommendation.*
+
+### A record of your contribution
+
+**My progress** retains attempts and feedback. MindScore recognises eligible game achievements; it is **not intelligence, brain health or proof of improvement**. Recorded AI assistance stays visible, and replaying a journey cannot repeatedly earn the same award.
+
+After an AI-reviewed case, you can request a practice report that cites the saved decisions and suggests three exercises. Reports do not change your game score.
+
+![My progress showing MindScore and twelve completed journeys using demonstration data](prototypes/tryvo/screenshots/readme/progress.png)
+
+*Demonstration progress from the repository’s offline test fixture. These totals are not user research, usage metrics or evidence of learning.*
+
+<details>
+<summary><strong>See the mobile experience</strong></summary>
+<br>
+<table>
+<tr>
+<td align="center"><img src="prototypes/tryvo/screenshots/readme/explore-mobile.png" alt="Mobile Explore with the purpose, start button and three-step journey" width="300"></td>
+<td align="center"><img src="prototypes/tryvo/screenshots/readme/route-mobile.png" alt="Mobile route guidance and counters above the scrollable map" width="300"></td>
+</tr>
+<tr><td align="center">A clear place to begin</td><td align="center">One next action at a time</td></tr>
+</table>
+
+</details>
+
+<details>
+<summary><strong>Explore all twelve fictional cases</strong></summary>
 
 | Case | The decision you practise |
 | --- | --- |
-| **The hotel with empty rooms** | Diagnose falling bookings before cutting prices |
-| **How many pens does Kota buy?** | Build a market estimate from segments and explicit assumptions |
-| **The CEO’s expansion choice** | Weigh growth against operational reliability |
-| **A price cut with a hidden cost** | Compare contribution, capacity and cannibalisation |
-| **The dashboard says demand is down** | Separate a signal from confounding changes |
-| **Who gets the peak-hour tram?** | Allocate limited capacity across competing needs |
-| **A city budget with no easy answer** | Prioritise investments under constraints |
-| **The announcement that could backfire** | Communicate uncertainty and protect trust |
-| **Sell out—or be left with stock?** | Make an inventory decision with incomplete demand data |
-| **The CEO and the storm forecast** | Make a contingent decision under uncertainty |
-| **Growth is hiding a trust problem** | Balance marketplace growth with quality and fairness |
-| **The network you cannot build all at once** | Sequence a portfolio of transport investments |
+| The hotel with empty rooms | Diagnose falling bookings before cutting prices |
+| How many pens does Kota buy? | Estimate a market with segments and explicit assumptions |
+| The CEO’s expansion choice | Weigh growth against operational reliability |
+| A price cut with a hidden cost | Compare contribution, capacity and cannibalisation |
+| The dashboard says demand is down | Separate a signal from confounding changes |
+| Who gets the peak-hour tram? | Allocate capacity across competing needs |
+| A city budget with no easy answer | Prioritise investments under constraints |
+| The announcement that could backfire | Communicate uncertainty and protect trust |
+| Sell out—or be left with stock? | Choose inventory with incomplete demand data |
+| The CEO and the storm forecast | Make a contingent decision under uncertainty |
+| Growth is hiding a trust problem | Balance marketplace growth, quality and fairness |
+| The network you cannot build all at once | Sequence transport investments |
 
-All case figures, characters and outcomes are fictional. The Kota example uses authored planning assumptions, not a claim about actual market demand.
+All figures, people and outcomes are authored scenarios. The Kota case is an estimation exercise, not a measurement of actual demand.
 
-### A client you can question. A decision you have to own.
+</details>
 
-Each case has a substantial brief and three exhibits. Before guidance, you record your initial judgment. You can then question an AI client, examine the evidence and write a four-part recommendation:
+## What is implemented
 
-1. **Decision:** what you would do and why.
-2. **Evidence:** the facts, calculations and assumptions behind it.
-3. **Trade-off:** the alternative you considered and what you give up.
-4. **Next test:** the evidence that would make you change your mind.
+| Working in the prototype | Boundary |
+| --- | --- |
+| Twelve routes, twelve case dossiers, two guided lessons and five standalone investigations | Transport, business consequences, credits and rival players are simulated. |
+| Groq-powered client conversation, rubric feedback and practice reports | Requires the configured backend. AI feedback can be mistaken. |
+| Server-validated case acceptance and engine-controlled route constraints / one-time awards | Browser-local progress is editable; this is not a production competitive leaderboard. |
+| Saved drafts, review retries, offline exercises and arrival resume | Progress is device/browser-specific; there is no account sync. |
+| Desktop/mobile layouts, keyboard controls, motion toggle and reduced-motion support | Automated Chromium checks cover selected behavior; they do not establish universal accessibility. |
 
-Groq powers the client conversation and case feedback. The model scores four rubric dimensions; server code determines acceptance and the game engine applies the reward. A recommendation needs at least **5/8**, with **no missing dimension**. There can be multiple defensible answers.
-
-![The first judgment in a fictional hotel strategy case](prototypes/tryvo/screenshots/cases-brief-desktop.png)
-
-### Learn the controls before taking the case
-
-Two guided Demo lessons teach route building, obstructions, fares and operating costs with contextual instructions. They stay offline and do not award campaign points. Every client case also offers an **offline route exercise** when the AI service is unavailable or you prefer numeric practice.
-
-## MindScore and your practice report
-
-**MindScore is accumulated eligible game progress—not intelligence, brain health or proof of improvement.**
-
-It recognises first-pass, unhinted case work and qualifying route achievements. Replays cannot farm points. The dashboard keeps recorded AI-client assistance separate, and preserves the broader game-point leaderboard under its existing rules. No recorded client chat is not proof of independence.
-
-On request, the AI practice coach reviews your saved judgments, recommendations and feedback. Its report cites the supporting case decisions and suggests **three short practice exercises** you can do in the game or on paper. Reports persist across refresh and reuse unchanged evidence.
-
-![My progress with MindScore and collapsed level reports; demonstration data](prototypes/tryvo/screenshots/mindscore-progress-desktop.png)
-
-*The screenshot uses demonstration progress. Your own dashboard starts from your saved attempts.*
-
-The report cannot determine whether AI is harming a person's mind, diagnose cognitive decline or prescribe a “brain reset.” Enjoyment, earned satisfaction, independent performance and longer-term learning are separate questions that require appropriate testing.
+**What still needs validation:** repeat demand, grading consistency, whether achievement feels personally earned, and performance on unfamiliar tasks after practice. The next useful study is unassisted first use followed by comparable unfamiliar tasks, with assistance recorded.
 
 ## Run locally
 
-**Requirements:** Python 3.10+ and a modern browser. No frontend build step or Python packages are required.
+**Python 3.10+ and a modern browser.** The app uses the Python standard library; no frontend build or package installation is required to run it.
 
 ```sh
 git clone https://github.com/aadishjainiitd-svg/Tryvu.git
 cd Tryvu
-python prototypes/tryvo/server.py --port 8765
+python3 prototypes/tryvo/server.py --port 8765
 ```
 
-Open **[http://127.0.0.1:8765](http://127.0.0.1:8765)**. Use `python3` if that is your Python command. Keep the server running while using the prototype.
+Open **[localhost:8765](http://localhost:8765/#explore)**. On Windows, use `py` if your installation does not provide `python3`.
 
-### Enable the AI client and reports
+To enable AI locally, copy [`.env.example`](.env.example) to `.env.tryvo` in the repository root, add your Groq key, and restart the server. Keep that file private. Without a key, use the guided Demo and offline route exercises. Case text is sent to Groq only when you request AI conversation, review or a practice report.
 
-Copy the supplied template to **`.env.tryvo` in the repository root**:
+See the **[developer guide](docs/DEVELOPMENT.md)** for configuration, Vercel/Render deployment, tests, data handling and troubleshooting.
 
-```sh
-# macOS / Linux
-cp .env.example .env.tryvo
-```
+## Built with
 
-```powershell
-# Windows PowerShell
-Copy-Item .env.example .env.tryvo
-```
+**HTML · CSS · vanilla JavaScript · Python · SQLite · Groq**
 
-Edit the local copy:
-
-```dotenv
-GROQ_API_KEY=your_private_groq_key
-GROQ_MODEL=openai/gpt-oss-120b
-```
-
-Use a model available to your Groq account. This integration uses **Groq**, not xAI Grok. Requests consume your provider quota and may incur provider charges. With no key, use **Demo** and the explicit **offline route exercise**; the interface never pretends an offline response came from AI.
-
-Serve the application with `server.py` for local development. Static hosting uses the separate Render backend configured below. The example configuration contains no credential.
-
-### Vercel frontend and Render backend
-
-The hosted frontend at **https://tryvu-tryvo.vercel.app** sends its case and practice-report requests to **https://tryvu-5.onrender.com**. The public API base is defined once in `prototypes/tryvo/js/api-config.js`; localhost development continues to use the local Python server. This is a plain JavaScript site with no build step, so no `NEXT_PUBLIC_API_URL`, `VITE_API_URL` or `REACT_APP_API_URL` variable is needed.
-
-- **Vercel:** deploy `main` with Root Directory `prototypes/tryvo` and Framework Preset **Other**. The existing project can redeploy after the GitHub push.
-- **Render:** deploy the same branch with start command `python prototypes/tryvo/server.py`. If the service Root Directory is `prototypes/tryvo`, use `python server.py`. The server reads Render's `PORT` automatically; `--port` remains available for local use.
-- Set `GROQ_API_KEY` and optionally `GROQ_MODEL` in **Render's** environment. Never put the private key in Vercel frontend JavaScript.
-- Check `https://tryvu-5.onrender.com/api/health`: HTTP 200 with `configured: true` means the server can see its configured key; it does not validate the key with Groq.
-- CORS supports `GET`, `POST`, `OPTIONS`, `Content-Type` and the frontend's `X-Tryvo-Client` header, including API error responses. By default it allows any origin as requested for this prototype. Optionally set `TRYVO_ALLOWED_ORIGINS=https://tryvu-tryvo.vercel.app` in Render to restrict access from browsers; add other exact origins separated by commas if needed.
-
-If automatic deployment is disabled, deploy the latest commit in both dashboards. A Render restart without persistent storage may clear existing case sessions; start a fresh case if an older session is unavailable.
-
-### A useful first walkthrough
-
-1. Open **Demo** and try “Your first connection.”
-2. Choose a journey on **Explore** and click **Open client case**.
-3. Record your first take, open exhibits and ask the client a question.
-4. Submit a recommendation, revise if necessary and unlock the route.
-5. Run the tram, respond to the arrival development and inspect **My progress**.
-6. Open **MindScore → Generate AI report** after a reviewed case.
-
-## Architecture
-
-Plain **HTML, CSS and vanilla JavaScript** form the interface. A small **Python standard-library server** serves the app and proxies AI requests. SQLite retains local case sessions and cached reports.
+The frontend is hosted on Vercel; the Python API runs on Render. Authored dossiers define the facts, AI provides conversation and critique, server validation determines acceptance, and the game engine applies route rules and rewards. The interface uses local artwork and fonts, CSS/SVG and the native Web Animations API.
 
 ```text
-Tryvu/
-├── .env.example                  Safe configuration template
-├── .gitignore                    Credentials, databases and generated files excluded
-└── prototypes/tryvo/
-    ├── index.html                Application shell
-    ├── css/                      Responsive interface and game styling
-    ├── js/
-    │   ├── rescue-engine.js      Route economics and one-time awards
-    │   ├── case-workbench.js     Brief → evidence → decision → feedback
-    │   └── mindscore.js          Eligible points and practice-report interface
-    ├── assets/                   Local artwork, fonts and authored case dossiers
-    ├── server.py                 Local web server and Groq case API
-    ├── report_service.py         Evidence-linked practice reports
-    ├── tests/                    Engine, API and browser checks
-    └── vendor/                   Retained third-party license notices
+prototypes/tryvo/
+├── index.html             App shell and navigation
+├── css/                   Twilight palette, layouts and motion
+├── js/                    Campaign, case desk, route engine and progress
+├── assets/                Town artwork, fonts and case dossiers
+├── server.py              Web server and AI case API
+├── report_service.py      Practice reports grounded in saved cases
+└── tests/                 Engine, API and browser checks
 ```
 
-| Boundary | Responsibility |
-| --- | --- |
-| Authored case dossiers | Keep the scenario and exhibits consistent |
-| AI client and reviewer | Discuss evidence and critique a recommendation |
-| Server validation | Validate response shape, citations and acceptance criteria |
-| Game engine | Apply route constraints, credits and non-repeatable awards |
-| Browser state | Preserve non-sensitive demo progress on this device |
+## Verification and project notes
 
-The two case-bank files—`assets/business-cases.json` and `js/case-data.js`—must stay in sync when editing scenarios.
+Existing checks exercise all twelve route economies, case revisions and retry recovery, saved progress, one-time awards, keyboard navigation, responsive layouts from 320–1440px, motion preferences and arrival/return transitions. AI-path browser suites use controlled responses; they do not validate live model quality. Screenshots here were captured from the actual interface with motion paused for clarity; [capture notes](prototypes/tryvo/screenshots/readme/README.md) describe their state.
 
-## Credentials and data
+- **[Run the checks](docs/DEVELOPMENT.md#tests)** — engine, API and browser commands.
+- **[Design system](DESIGN.md)** — charcoal surfaces, lavender signals, coral actions and accessible motion.
+- **[Product → design handoff](product/first-use-guidance.md)** — the intended decision journey, assumptions and trade-offs.
+- **[Verification notes](research/first-use-guidance-verification.md)** — exercised paths and remaining limits.
+- **[Business cases](prototypes/tryvo/BUSINESS-CASES.md)** · **[Route economy](prototypes/tryvo/ECONOMY.md)** · **[Guided lessons](prototypes/tryvo/DEMO-DESIGN.md)**.
 
-- Real `.env` files are ignored at every directory level. **Only `.env.example` is intended for Git.**
-- API keys remain server-side, outside the served web directory. They are never placed in JavaScript or localStorage.
-- `.tryvo-local/`, local databases, logs and generated AI reports are excluded from version control.
-- Case requests have payload limits, rate limits, response validation and retry caching. The server listens on `0.0.0.0`, accepts local and configured Render hosts, and supports optional browser-origin restrictions.
-- Use fictional information. Case text is sent to Groq when you request AI conversation, review or reporting.
-- **Reset Demo** clears browser progress and its saved report. It does not delete the private server-side session store. To remove that store, stop the server and remove the repository's `.tryvo-local` folder.
-- Rotate any API key that has been shared or exposed. A `.gitignore` rule cannot revoke an already exposed credential.
+## Credits
 
-## Tests
-
-Run the deterministic checks from the repository root:
-
-```sh
-node prototypes/tryvo/tests/economy-engine.cjs
-node prototypes/tryvo/tests/cases-engine.cjs
-python prototypes/tryvo/tests/cases-server.py
-python prototypes/tryvo/tests/report-server.py
-python prototypes/tryvo/tests/deployment-http.py
-node prototypes/tryvo/tests/api-config.cjs
-```
-
-For browser checks, install Node.js and Playwright, then start the local server in another terminal:
-
-```sh
-npm install --no-save playwright
-npx playwright install chromium
-node prototypes/tryvo/tests/cases-browser.cjs
-node prototypes/tryvo/tests/mindscore-browser.cjs
-node prototypes/tryvo/tests/economy-browser.cjs
-node prototypes/tryvo/tests/tutorial.cjs
-node prototypes/tryvo/tests/tutorial-preservation.cjs
-```
-
-Browser coverage includes case revisions, unavailable AI, retry recovery, saved drafts, one-time rewards, mobile layouts at 320/390px, keyboard controls, reset and preservation of older progress. AI-path browser tests use controlled responses; they do not spend provider credits or establish model quality. A live Groq conversation, case review and practice report were also smoke-tested during development.
-
-## What is real—and what is simulated
-
-**Implemented:** twelve tram journeys, twelve case dossiers, live AI client discussion and review, contextual tutorials, persistent progress, MindScore, AI practice reports and a leaderboard that places your actual game score among fictional rivals.
-
-**Simulated:** transport operations, business outcomes, travel credits and other players. There are no real transactions or remote multiplayer sessions.
-
-**Still to validate:** repeat demand, grading consistency, whether achievement feels personally earned and whether practice helps on unfamiliar tasks. Scores, retention and a single independent check cannot answer all of those questions.
-
-This is a local prototype. Public deployment needs authentication, user-specific quotas, retention controls and server-owned scores. Browser-local scores are editable by their owner and are not suitable for a competitive production leaderboard.
-
-## Design and attribution
-
-The current **Field Guide** design uses a warm-white canvas, forest-green actions, locally bundled typography and an illustrated town as its visual anchor. Explore, route play, guided lessons, client cases, progress, reports and rankings share the same presentation system. See [DESIGN.md](DESIGN.md) for tokens and responsive rules, and [redesign verification](research/design-revamp-verification.md) for exercised flows and limitations.
-
-First-use guidance makes the decision → route → reflection loop explicit. A current-step panel identifies the next action, equal-choice arrows show legal connections, and saved cases resume before any track is built. The product-to-design rationale is in [first-use guidance](product/first-use-guidance.md).
-
-The **Future Atlas** motion pass adds moving route highlights, a Scenery/Routes map selector, pointer-responsive depth, unfolding headlines, staggered cards and dialog entrances. Pause decorative motion from the map toolbar or footer; device reduced-motion settings take precedence. The effects use native CSS/SVG/Web Animations and leave game state unchanged.
-
-Trams now travel continuously along the actual route, pause at pickups and visibly arrive before opening the next step. New route segments draw into place, changed counters receive a brief emphasis, and return links preserve your browsing position and chapter focus.
-
-Run the additional responsive/visual regression checks with the local server running:
-
-```sh
-node prototypes/tryvo/tests/fieldguide-browser.cjs
-node prototypes/tryvo/tests/motion-browser.cjs
-node prototypes/tryvo/tests/journey-polish-browser.cjs
-node prototypes/tryvo/tests/guidance-browser.cjs
-```
-
-These tests write screenshots to your OS temporary directory by default. Set `TRYVO_SCREENSHOT_DIR` to choose another output directory. The guidance suite uses mocked case responses; these suites do not validate live AI quality.
-
-Tryvo starts from **HTML5 Boilerplate** and adapts selected interaction patterns from **Brad Traversy's 50projects50days**. License notices for those projects and bundled fonts are retained. See [ATTRIBUTION.md](prototypes/tryvo/ATTRIBUTION.md), the [Boilerplate notice](prototypes/tryvo/LICENSE.txt) and `vendor/` for the relevant terms.
-
-Further implementation notes: [Business cases](prototypes/tryvo/BUSINESS-CASES.md) · [Route economy](prototypes/tryvo/ECONOMY.md) · [Guided demo](prototypes/tryvo/DEMO-DESIGN.md).
-
----
-
-**Make the attempt worth choosing, the contribution visible and independent progress testable.**
+Tryvo builds on HTML5 Boilerplate and selected interaction patterns from Brad Traversy’s *50projects50days*. Existing license notices and bundled-font terms are retained. See [source attribution](prototypes/tryvo/ATTRIBUTION.md), [Boilerplate’s license](prototypes/tryvo/LICENSE.txt) and the [vendor notices](prototypes/tryvo/vendor/).

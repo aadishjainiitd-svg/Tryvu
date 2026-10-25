@@ -4,20 +4,20 @@ Tryvo should feel like a thoughtful, beautifully made game about a place worth e
 
 ## Shared design system
 
-`prototypes/tryvo/css/fieldguide.css` is the shared presentation system; `css/motion.css` loads after it for the Future Atlas treatment. These override earlier feature-specific styles; the earlier modules still own game geometry and legacy layouts. Keep changes to shared visual tokens in the field guide and verify affected product surfaces in a browser.
+`prototypes/tryvo/css/fieldguide.css` is the shared presentation system; `css/motion.css` loads after it for the Future Atlas treatment, followed by `css/guidance.css` for current-step guidance. These override earlier feature-specific styles; the earlier modules still own game geometry and legacy layouts. Keep changes to shared visual tokens in the field guide and verify affected product surfaces in a browser.
 
 | Role | Value |
 |---|---|
-| Canvas | `#f7f8f2` |
-| Paper panels | `#fffefa` |
-| Raised surface | `#edf1e7` |
-| Primary text | `#223c30` |
-| Secondary text | `#626f65` |
-| Borders | `#dce2d7` |
-| Action | `#28543e` |
-| Action hover | `#193e2b` |
-| Highlight | `#ddedaa` |
-| Featured chapter | `#244b38` |
+| Canvas | `#18181c` |
+| Panels | `#242429` |
+| Raised surface | `#303037` |
+| Primary text | `#f2f1fa` |
+| Secondary text | `#bdbcc6` |
+| Borders | `#404047` |
+| Action | `#ffb19a` |
+| Action hover | `#ffc5b3` |
+| Highlight | `#c2b3ff` |
+| Featured chapter | `#242429` |
 
 Display: bundled Bricolage Grotesque, 550–650 weight. Body and controls: bundled Source Sans 3. Both use local files, variable font weights and `font-display:swap`. Preserve font attribution. Headings use negative tracking; labels use limited tracking. Use ordinary sentences and specific destinations for actions.
 
@@ -27,7 +27,7 @@ Desktop navigation is a horizontal bar. At 760px and below it becomes the existi
 
 Explore opens with a spacious title and short explanation, then the map paired with the next chapter. The map remains the visual anchor. The chapter collection shows actual case topics; every card launches its associated journey. The complete index is a native disclosure that opens in place without changing the app route.
 
-Paper surfaces hold cases, exhibits, journals and reports. Dark green is reserved for the next chapter and map labels. Dark diagram backgrounds may retain their explicit route, obstacle and station colors; preserve meaning and contrast instead of globally recoloring SVG geometry.
+Charcoal surfaces hold cases, exhibits, journals and reports. Lavender marks navigation and route signals; coral identifies primary actions. The featured chapter uses the same dark panel system. Dark diagram backgrounds may retain their explicit route, obstacle and station colors; preserve meaning and contrast instead of globally recoloring SVG geometry.
 
 Radii: buttons/inputs 8–9px; ordinary panels 12px; map and chapter 16px; dialogs 18px. Capsules are reserved for navigation, state and compact skill tags. Avoid nesting decorative cards around every sentence.
 

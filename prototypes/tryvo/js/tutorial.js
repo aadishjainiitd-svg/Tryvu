@@ -2,7 +2,7 @@
 window.TryvoTutorial=(()=>{
  'use strict';
  const E=window.TryvoRescueEngine,esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
- let host,timer,running=false,flash='',focusCell=null;
+ let host,travel=null,running=false,flash='',focusCell=null;
  const first={...E.levels[0],cols:5,rows:3,start:5,end:9,obstruction:7,blocked:[12],service:null,stops:[{at:6,name:'Lantern crew',people:4,fare:0,required:true}],budget:4,unit:1,carriages:1,capacity:6,minPassengers:4,optimalDistance:4,closedDistance:6,distanceLimit:4,toll:0,creditReward:0,mode:'shortcut',fares:false,profitTarget:null};
  const second={...first,cols:7,rows:3,start:7,end:13,obstruction:10,blocked:[17],stops:[{at:8,name:'Town square',people:6,fare:2},{at:1,name:'Hill stop',people:5,fare:1},{at:15,name:'Riverside',people:9,fare:1,boardingFee:2}],budget:5,unit:2,capacity:10,minPassengers:5,optimalDistance:6,closedDistance:8,distanceLimit:8,fares:true,profitTarget:0};
  const lessons=[{id:'first-connection',title:'Your first connection',subtitle:'Repair a shortcut. Bring four riders home.',time:'About 3 minutes',layout:first,phases:['intro','pickup','repair','connect','run','settle','done']},{id:'smart-service',title:'The smarter pickup',subtitle:'Compare three groups. Make the credits work.',time:'About 4 minutes',layout:second,phases:['intro','choose','budget','connect','run','settle','done']}];
@@ -14,7 +14,7 @@ window.TryvoTutorial=(()=>{
  function newDraft(lesson){const d=E.draft(lesson.layout);d.phase='intro';d.choice=null;d.guideHidden=false;d.repairAnswer='';d.settleAnswer='';if(lesson.id==='smart-service')d.obstacle={answer:{saved:2,credits:4},solved:true,tries:[],hint:false};return d;}
  function current(){const s=state(),lesson=lessons.find(x=>x.id===s.selected)||lessons[0];let d=s.drafts[lesson.id];if(!d||!E.validatePath(lesson.layout,d.path)||!lesson.phases.includes(d.phase))d=s.drafts[lesson.id]=newDraft(lesson);return {s,lesson,l:lesson.layout,d};}
  function configure(api){host=api;}
- function cancel(){clearTimeout(timer);running=false;}
+ function cancel(){travel?.cancel();travel=null;running=false;}
  function paint(focus){host.render(false);if(focus){const el=document.querySelector(focus);el?.focus({preventScroll:true});if(matchMedia('(max-width:900px)').matches&&(focus.includes('guide')||focus.startsWith('#tutorial-')))document.querySelector('.tutorial-guide')?.scrollIntoView({block:'start',behavior:'instant'});}}
  function say(text){flash=text;const el=document.querySelector('#tutorial-feedback');if(el)el.textContent=text;}
  function go(phase,notice=''){const {d}=current();d.phase=phase;d.guideHidden=false;flash=notice;host.save();paint('.tutorial-guide h2');}
@@ -46,7 +46,20 @@ window.TryvoTutorial=(()=>{
  if(action==='map-help'){host.modal('Reading your route',`<div class="tutorial-help"><p><strong>Depot</strong> is your starting point. <strong>Festival</strong> is the destination.</p><p>Click a neighbouring street to extend the track. Use arrow keys and Enter if you prefer a keyboard. The glowing marker suggests your next move.</p><p>A striped shortcut opens after its challenge. A × marks a permanent closure. <strong>Undo</strong> removes the last street.</p><p>Your lesson guide stays beside the map. On a phone, it appears above the map.</p></div>`);return;}
  if(action==='undo'){if(d.path.length<=1)return;d.path.pop();d.phase=d.path.length===1&&lesson.id==='first-connection'?'pickup':lesson.id==='first-connection'&&!d.obstacle.solved?'repair':'connect';flash='Last street removed. You can try a different connection.';host.save();paint();return;}
  if(action==='cell'){const id=Number(el.dataset.cellId);focusCell=id;if(d.phase==='repair'&&id===l.obstruction){d.repairOpen=true;d.guideHidden=false;host.save();paint('#tutorial-saving');return;}if(d.phase==='pickup'&&id!==l.stops[0].at){say('Start with the glowing 4-rider stop next to Depot.');return;}if(!['pickup','connect','run'].includes(d.phase)){say(d.phase==='repair'?'Click the striped Shortcut marker to open its challenge.':'Follow the current guide before extending the route.');return;}try{const oldPhase=d.phase;if(!E.edit(l,d,id))return;const f=E.finance(l,d);flash=f.balance<0?'This route needs more credits than you have. Undo the last street.':f.distance>l.distanceLimit?'This route is too long. Undo and follow the shorter connection.':'';if(d.phase==='pickup'){d.phase=d.obstacle.solved?'connect':'repair';flash='One kilometre connected. You picked up all four riders.';}else if(d.path.at(-1)===l.end){const result=E.evaluate(l,d.path,d.puzzle,d);if(result.reason==='checkpoint')d.phase='run';else flash=result.message;}else d.phase='connect';host.save();paint(oldPhase!==d.phase?'.tutorial-guide h2':`[data-cell-id="${id}"]`);}catch(error){say(error.message);}return;}
- if(action==='run'){if(d.phase!=='run')return;const result=E.evaluate(l,d.path,d.puzzle,d);if(result.reason!=='checkpoint'){say(result.message);return;}running=true;document.querySelectorAll('.tutorial-play button').forEach(x=>x.disabled=true);const marker=document.querySelector('.tutorial-tram');marker.hidden=false;let i=0;const step=()=>{if(!document.querySelector('.tutorial-map')){cancel();return;}const id=d.path[i];marker.style.left=(8+(id%l.cols)*84/(l.cols-1))+'%';marker.style.top=(22+Math.floor(id/l.cols)*28)+'%';if(++i<d.path.length)timer=setTimeout(step,matchMedia('(prefers-reduced-motion: reduce)').matches?0:300);else{running=false;go('settle','Arrival complete. One final calculation finishes your trip.');}};say('Your tram is following the track you built…');step();}
+ if(action==='run'){
+  if(d.phase!=='run')return;
+  const result=E.evaluate(l,d.path,d.puzzle,d);
+  if(result.reason!=='checkpoint'){say(result.message);return;}
+  running=true;document.querySelectorAll('.tutorial-play button').forEach(x=>x.disabled=true);
+  const marker=document.querySelector('.tutorial-tram');marker.hidden=false;
+  const points=d.path.map(at=>({at,x:8+(at%l.cols)*84/(l.cols-1),y:22+Math.floor(at/l.cols)*28,pause:l.stops.some(s=>s.at===at&&d.boarding?.[at]!==false)?240:0}));
+  say('Your tram is following the track you built…');
+  travel=window.TryvoTravel.play({marker,points,onArrive:({at})=>{
+   const stop=l.stops.find(s=>s.at===at);
+   if(stop&&d.boarding?.[at]!==false)say(`${stop.people} riders aboard. Next stop: Festival.`);
+  },onComplete:()=>{running=false;go('settle','Arrival complete. One final calculation finishes your trip.');}});
+ }
+
  }
  document.addEventListener('click',e=>{const el=e.target.closest('[data-tutorial]');if(el)handle(el.dataset.tutorial,el);});
  document.addEventListener('input',e=>{if(!['tutorial-saving','tutorial-total'].includes(e.target.id)||!host)return;const {d}=current();d[e.target.id==='tutorial-saving'?'repairAnswer':'settleAnswer']=e.target.value;host.save();});

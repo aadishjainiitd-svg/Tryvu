@@ -2,13 +2,13 @@
 window.TryvoRescue=(()=>{
  'use strict';
  const C=window.TryvoCampaign,E=window.TryvoRescueEngine,Q=window.TryvoJourneyPuzzles,esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
- let host,timer=null,playing=false,focusCell=null,flash='',recovered=false,showTrace=false,fitTown=false,resumeAt=null;
+ let host,travel=null,playing=false,focusCell=null,flash='',recovered=false,showTrace=false,fitTown=false,resumeAt=null;
  const icons={tram:'<rect x="4" y="3" width="16" height="17" rx="5"/><path d="M7 7h10v6H7zM8 20l-2 3m10-3 2 3"/><circle cx="8" cy="17" r="1"/><circle cx="16" cy="17" r="1"/>',flag:'<path d="M5 22V3m0 1h13l-3 4 3 4H5"/>',people:'<circle cx="9" cy="7" r="3"/><path d="M3 20v-4a6 6 0 0 1 12 0v4M17 4a3 3 0 0 1 0 6m1 4a5 5 0 0 1 3 5v2"/>',bolt:'<path d="m14 2-9 12h7l-2 8 9-13h-7z"/>',undo:'<path d="m8 4-5 5 5 5M3 9h10a7 7 0 0 1 0 14"/>',play:'<path d="m8 4 12 8-12 8z"/>',check:'<path d="m4 12 5 5L20 6"/>',star:'<path d="m12 2 3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/>',lock:'<rect x="5" y="10" width="14" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>',refresh:'<path d="M20 8a9 9 0 1 0 1 7M20 2v7h-7"/>'};
  const icon=(id)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icons[id]||icons.star}</svg>`;
  const button=(text,action,extra='',secondary=false)=>`<button class="rescue-button ${secondary?'rescue-secondary':''}" data-rescue="${action}" ${extra}>${text}</button>`;
  function state(){const s=host.getState();if(!E.valid(s.tram)){if(s.tram)recovered=true;s.tram=E.fresh();}return s.tram;}
  function current(){const s=state();if(!E.unlocked(s,s.selected)||!C.available(host.getState(),s.selected))s.selected=E.levels[0].id;const l=C.routeLevel(host.getState(),E.level(s.selected));s.drafts[l.id]||=E.draft(l);Q.ensure(s.drafts[l.id]);return {s,l,d:s.drafts[l.id]};}
- function cancel(){clearTimeout(timer);timer=null;playing=false;}
+ function cancel(){travel?.cancel();travel=null;playing=false;}
  function configure(api){host=api;}
  function scene(lit=false){return `<img class="festival-illustration ${lit?'festival-lit':''}" src="assets/festival-town.png" alt="A lantern-lit mountain town, a river crossing and a festival waiting for its guests" width="1536" height="1024">`;}
  function home(){
@@ -51,10 +51,30 @@ window.TryvoRescue=(()=>{
  function records(){const s=state();if(!s.history.length)return '';return `<details class="rescue-records"><summary>Festival Rescue · your route records</summary><p>Best successful route per layout. Fewer credits wins within the same layout. No live players or universal ability ranking.</p><div class="route-record-grid">${E.levels.map(l=>{const b=E.best(s,l.id);return `<article><h3>${esc(l.name)}</h3>${b?`<strong>${b.cost}<small> / ${l.budget} credits</small></strong><p>${b.path.length-1} streets · ${b.moves} edits${b.hint?' · Guidance opened':''}</p>${button('Inspect my route','watch-best',`data-level="${l.id}"`,true)}`:'<p>Complete this layout to set a record.</p>'}</article>`;}).join('')}</div></details>`;}
  function paint(focus){const scroll=document.querySelector('.map-scroll')?.scrollLeft||0;host.render(false);const map=document.querySelector('.map-scroll');if(map)map.scrollLeft=scroll;if(focus!==undefined){const el=document.querySelector(`[data-cell="${focus}"]`);el?.focus({preventScroll:true});}}
  function message(text){flash=text;const el=document.querySelector('#rescue-message');if(el)el.textContent=text;else host.toast(text);}
- function animate(l,r,notify=false){cancel();playing=true;document.querySelector('.rescue-board')?.classList.add('is-running');const result=r,route=r.path.slice(0,result.stopIndex+1),reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;document.querySelectorAll('.rescue-page [data-rescue],.rescue-page [data-boarding]').forEach(b=>b.disabled=true);const marker=document.querySelector('.moving-tram');let i=resumeAt===l.checkpoint?Math.max(0,route.indexOf(l.checkpoint)):0;resumeAt=null;
-  const step=()=>{if(!document.querySelector('.rescue-board')){cancel();return;}const at=route[i];const [px,py]=point(l,at);marker.style.left=px+'%';marker.style.top=py+'%';document.querySelector(`[data-cell="${at}"]`)?.classList.add('tram-visited');const stop=l.stops.find(s=>s.at===at);if(stop&&r.boarding?.[at]!==false)message(`${stop.people} ${stop.name.toLowerCase()} are aboard. Your route keeps going.`);else if(at===l.switch)message('Signal sent. The bridge is now open for your tram.');if(i++<route.length-1){timer=setTimeout(step,reduced?0:stop||at===l.switch?450:180);}else{playing=false;flash=result.message;paint();const out=document.querySelector('#run-outcome');out?.focus({preventScroll:true});out?.scrollIntoView({behavior:reduced?'instant':'smooth',block:'nearest'});if(notify){if(r.reason==='checkpoint')openCheckpoint(l,current().d);else window.TryvoFeedback.route(l,r);}}};
-  if(reduced)i=route.length-1;message('Your tram is testing the route…');step();
+ function animate(l,r,notify=false){
+  cancel();playing=true;
+  document.querySelector('.rescue-board')?.classList.add('is-running');
+  document.querySelectorAll('.rescue-page [data-rescue],.rescue-page [data-boarding]').forEach(b=>b.disabled=true);
+  const route=r.path.slice(0,r.stopIndex+1),start=resumeAt===l.checkpoint?Math.max(0,route.indexOf(l.checkpoint)):0;
+  resumeAt=null;
+  const points=route.slice(start).map(at=>{const [x,y]=point(l,at),stop=l.stops.find(s=>s.at===at);return {x,y,at,pause:stop&&r.boarding?.[at]!==false||at===l.switch?240:0};});
+  const marker=document.querySelector('.moving-tram');
+  message('Your tram is testing the route…');
+  travel=window.TryvoTravel.play({marker,points,onArrive:({at},i)=>{
+   document.querySelector(`[data-cell="${at}"]`)?.classList.add('tram-visited');
+   const trail=document.querySelector('.rescue-board .tram-trail');
+   if(trail)trail.setAttribute('points',poly(l,route.slice(0,start+i+1)));
+   const stop=l.stops.find(s=>s.at===at);
+   if(stop&&r.boarding?.[at]!==false)message(`${stop.people} ${stop.name.toLowerCase()} are aboard. Your route keeps going.`);
+   else if(at===l.switch)message('Signal sent. The bridge is now open for your tram.');
+  },onComplete:()=>{
+   playing=false;flash=r.message;paint();
+   const out=document.querySelector('#run-outcome');out?.focus({preventScroll:true});
+   if(notify){if(r.reason==='checkpoint')openCheckpoint(l,current().d);else window.TryvoFeedback.route(l,r);}
+   if(!document.querySelector('#dialog').open)out?.scrollIntoView({behavior:window.TryvoTravel.enabled()?'smooth':'instant',block:'nearest'});
+  }});
  }
+
  function openCheckpoint(l,d){window.TryvoCases.open(l,d,'arrival',{...host,submit:result=>E.submit(state(),l,d,'arrival',result),offline:()=>offlineCheckpoint(l,d),isCurrent:()=>host.getState().tram?.drafts[l.id]===d,continue:()=>{const last=state().history.at(-1);resumeAt=last?.level===l.id&&last.reason==='checkpoint'&&JSON.stringify(last.path)===JSON.stringify(d.path)?l.checkpoint:null;paint();handle('run',{});}});}
  function openObstacle(l,d){window.TryvoCases.open(l,d,'obstacle',{...host,submit:result=>E.submit(state(),l,d,'obstacle',result),offline:()=>offlineObstacle(l,d),isCurrent:()=>host.getState().tram?.drafts[l.id]===d,continue:()=>{paint();message('Your recommendation reopened the shortcut. Connect the repaired street from a neighbouring junction.');}});}
  function offlineCheckpoint(l,d){Q.open({...l,puzzle:E.arrivalPuzzle(l,d)},d,{...host,submit:result=>E.submit(state(),l,d,'arrival',result),paint:()=>paint(),continue:()=>{const last=state().history.at(-1);resumeAt=last?.level===l.id&&last.reason==='checkpoint'&&JSON.stringify(last.path)===JSON.stringify(d.path)?l.checkpoint:null;paint();handle('run',{});}});}

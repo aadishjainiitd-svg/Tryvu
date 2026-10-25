@@ -38,6 +38,7 @@
    button.querySelector('[data-motion-label]').textContent = reduced.matches ? 'Reduced motion' : enabled() ? 'Motion on' : 'Motion off';
   });
   if (!enabled()) { resetDepth(); stopReveals(); }
+  window.dispatchEvent(new Event('tryvo:motionchange'));
  }
  function animate(element, frames, options) {
   if (!enabled() || !element.animate) return;

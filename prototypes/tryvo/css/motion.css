@@ -107,6 +107,8 @@ html[data-motion=off] .atlas-flow { opacity:0; }
 html[data-motion=off] :is(.header .brand:hover img,.campaign-dispatch .button:hover>span,.chapter-card:hover .chapter-card-arrow,.new-player-invite:hover .invite-symbol,.campaign-pin:hover>b) { transform:none!important; }
 html[data-motion=off] .chapter-card::after { display:none; }
 html[data-tab-hidden=true] .atlas-flow,.world-map-wrap[data-in-view=false] .atlas-flow { animation-play-state:paused!important; }
+/* Tram positions are interpolated by travel.js; legacy CSS must not lag behind. */
+body #main :is(.moving-tram,.tutorial-tram) { transition:none!important; }
 @media(max-width:1150px) and (min-width:761px) {
  .atlas-toolbar { padding:8px 10px; gap:8px; flex-wrap:wrap; }
  .atlas-toolbar .atlas-id { font-size:9px; }

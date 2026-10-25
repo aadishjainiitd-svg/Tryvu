@@ -109,6 +109,10 @@ html[data-motion=off] .chapter-card::after { display:none; }
 html[data-tab-hidden=true] .atlas-flow,.world-map-wrap[data-in-view=false] .atlas-flow { animation-play-state:paused!important; }
 /* Tram positions are interpolated by travel.js; legacy CSS must not lag behind. */
 body #main :is(.moving-tram,.tutorial-tram) { transition:none!important; }
+body #main :is(.route-wallet strong,.tutorial-counters strong) { display:inline-block; font-variant-numeric:tabular-nums; }
+.route-extension { pointer-events:none; }
+.campaign-home[data-returned] :is(.fieldguide-intro h1,.title-line>span,.world-spark,.fieldguide-note,.world-section-heading,.campaign-world,.dispatch-chapter-number),
+.campaign-home[data-returned] .campaign-dispatch::before { animation:none!important; }
 @media(max-width:1150px) and (min-width:761px) {
  .atlas-toolbar { padding:8px 10px; gap:8px; flex-wrap:wrap; }
  .atlas-toolbar .atlas-id { font-size:9px; }

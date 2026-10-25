@@ -10,6 +10,18 @@
  try { saved = localStorage.getItem(key) !== 'off'; } catch { /* Session-only preference. */ }
  let frame = 0, pointer = null, tilted = null, revealObserver = null, worldObserver = null;
  let previousRoute = null, mapStyle = 'scenery';
+ let editSnapshot = null;
+ let returnRequested = false;
+ const returns = new Map();
+ const routeName = () => location.hash.split('?')[0] || '#explore';
+ document.addEventListener('click',event=>{
+  const back=event.target.closest('.rescue-top a[href="#explore"],.tutorial-top a[href="#demo"],.tutorial-quit[href="#demo"]');
+  if(back&&!event.ctrlKey&&!event.metaKey&&!event.shiftKey&&!event.altKey)returnRequested=true;
+ },true);
+ // Browsers with Navigation API also restore context on history traversal.
+ window.navigation?.addEventListener('navigate',event=>{
+  if(event.navigationType==='traverse')returnRequested=true;
+ });
  const effects = new Set();
  const enabled = () => saved && !reduced.matches;
 
@@ -45,6 +57,54 @@
   const animation = element.animate(frames, options);
   effects.add(animation);
   animation.finished.then(() => effects.delete(animation), () => effects.delete(animation));
+  return animation;
+ }
+ // Capture before synchronous page replacement. No delays to rendering or input.
+ window.addEventListener('tryvo:before-render', event => {
+  editSnapshot = null;
+  const destination = routeName();
+  const child = {'#explore':'#rescue','#demo':'#demo-play'}[previousRoute];
+  if (event.detail.focus && child === destination) {
+   const active = document.activeElement;
+   const selected = previousRoute === '#explore'
+    ? active.closest('[data-campaign="play"][data-chapter]')
+    : active.closest('[data-lesson]');
+   const selector = selected?.dataset.chapter
+    ? `[data-campaign="play"][data-chapter="${CSS.escape(selected.dataset.chapter)}"]`
+    : selected?.dataset.lesson ? `[data-lesson="${CSS.escape(selected.dataset.lesson)}"]` : null;
+   const selectionIndex=selector?[...main.querySelectorAll(selector)].indexOf(selected):-1;
+   returns.set(previousRoute,{scroll:scrollY,selector,selectionIndex,indexOpen:!!main.querySelector('#all-journeys')?.open});
+  }
+  if (!event.detail.focus && ['#rescue','#demo-play'].includes(previousRoute)) {
+   const line = main.querySelector('.route-plan,.lesson-route');
+   editSnapshot = {
+    points:line?.getAttribute('points'),
+    counters:[...main.querySelectorAll('.route-wallet strong,.tutorial-counters strong')].map(el=>el.textContent)
+   };
+  }
+ });
+ function polishEdit() {
+  const snapshot = editSnapshot;
+  editSnapshot = null;
+  if (!enabled() || !snapshot) return;
+  main.querySelectorAll('.route-wallet strong,.tutorial-counters strong').forEach((el,i)=>{
+   if (snapshot.counters[i] !== undefined && snapshot.counters[i] !== el.textContent)
+    animate(el,[{opacity:.45,transform:'translateY(4px)'},{opacity:1,transform:'none'}],{duration:180,easing:'ease-out'});
+  });
+  const line = main.querySelector('.route-plan,.lesson-route');
+  const before = snapshot.points?.trim().split(/\s+/), after = line?.getAttribute('points')?.trim().split(/\s+/);
+  if (!before?.length || after?.length !== before.length+1 || !before.every((point,i)=>point===after[i])) return;
+  const segment=line.cloneNode(false), full=after.join(' ');
+  line.setAttribute('points',before.join(' '));
+  segment.setAttribute('points',after.slice(-2).join(' '));
+  segment.setAttribute('pathLength','1');
+  segment.setAttribute('aria-hidden','true');
+  segment.classList.add('route-extension');
+  segment.style.strokeDasharray='1';
+  line.after(segment);
+  const effect=animate(segment,[{strokeDashoffset:1},{strokeDashoffset:0}],{duration:190,easing:'ease-out'});
+  const finish=()=>{line.setAttribute('points',full);segment.remove();};
+  if(effect)effect.finished.then(finish,finish);else finish();
  }
  function setView(view) {
   const world = main.querySelector('.world-map-wrap');
@@ -68,10 +128,26 @@
    }, {threshold:0});
    worldObserver.observe(world);
   }
-  const route = location.hash.split('?')[0] || '#explore';
+  const route = routeName();
+  const from = previousRoute;
   const newRoute = route !== previousRoute;
   previousRoute = route;
+  const returnVisit = returnRequested && newRoute && ({'#explore':'#rescue','#demo':'#demo-play'}[route] === from) && returns.get(route);
+  returnRequested = false;
+  if (returnVisit) {
+   const index=main.querySelector('#all-journeys');
+   if(index)index.open=returnVisit.indexOpen;
+   main.querySelector('.campaign-home,.tutorial-home')?.setAttribute('data-returned','true');
+   window.scrollTo({top:returnVisit.scroll,behavior:'instant'});
+   if(returnVisit.selector)main.querySelectorAll(returnVisit.selector)[returnVisit.selectionIndex]?.focus({preventScroll:true});
+  }
+  if (!newRoute) polishEdit();
   if (!enabled() || !newRoute) return;
+  if (!returnVisit && ['#rescue','#demo-play','#progress','#rankings','#mission-library'].includes(route)) {
+   const page=main.querySelector(':scope > section');
+   if(page)animate(page,[{opacity:.65,transform:'translateY(8px)'},{opacity:1,transform:'none'}],{duration:240,easing:'cubic-bezier(.2,.75,.2,1)'});
+  }
+  if(returnVisit)return;
   // Never animate a rerender caused by a route-building move or form update.
   if (!['#explore','#demo','#progress','#rankings'].includes(route)) return;
   const candidates = [...main.querySelectorAll('.chapter-card,.new-player-invite,.lesson-card,.mindscore-card,.leaderboard-standing')];

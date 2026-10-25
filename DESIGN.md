@@ -54,3 +54,13 @@ Run `node prototypes/tryvo/tests/fieldguide-browser.cjs` with the local server r
 Reference rationale and limitations are in `research/design-references.md` and `research/design-revamp-verification.md`. No third-party component source was copied in this pass.
 
 `tests/journey-polish-browser.cjs` samples real tram positions and checks arrival sequencing, cancellation, runtime motion changes, route drawing/undo and desktop/mobile return context. Run it alongside the tutorial and economy suites when changing travel or the render hook.
+
+## Guidance follows the product goal
+
+Explain the human decision loop before presenting the town. Explore has one start/resume action above the map and a three-part explanation. Route play derives its current step and action from the actual draft/evaluator; case phases explain what to do next. AI client questions remain optional.
+
+Arrows identify every legal adjacent connection equally, never a best route. Show-connections changes only focus/scroll, with reduced-motion support; it does not change hint flags or rewards. Keep the original direct controls available.
+
+Persist the current draft’s checkpoint record ID because case review clears the engine’s last-result pointer. Invalidate it on route edits, undo, pickup changes and fresh-route creation. Accepted arrival reviews can finish without repeating the full tram animation. Dismissing a case refreshes the route and focuses its updated next action.
+
+`tests/guidance-browser.cjs` verifies first-use actions, equal arrows, unchanged state during orientation, saved first takes, dismissal, arrival rejection/acceptance/reload, finalization and fresh-route isolation at desktop/mobile widths. The [CEO-to-design handoff](product/first-use-guidance.md) records assumptions and the remaining need for real newcomer testing.

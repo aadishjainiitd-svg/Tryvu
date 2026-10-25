@@ -12,8 +12,8 @@ window.TryvoCampaign=(()=>{
  const routeLevel=(s,l)=>l;
  const destination=()=> 'Lantern Festival';
  function launch(s,c,label){return `<button class="button campaign-launch" data-campaign="play" data-chapter="${c.id}">${esc(label||(done(s,c.id)?'Replay journey':'Start journey'))} <span aria-hidden="true">→</span></button>`;}
- function resume(s){const id=s.tram?.selected,d=s.tram?.drafts?.[id];return chapter(id)&&d?.path?.length>1&&!done(s,id)?chapter(id):null;}
- function primary(s){const c=resume(s)||next(s);return c?launch(s,c,resume(s)?'Resume my tram':'Start the next journey'):'<button class="button" data-campaign="finale">See my festival</button>';}
+ function resume(s){const id=s.tram?.selected,d=s.tram?.drafts?.[id],started=d&&(d.path?.length>1||d.obstacle?.solved||d.obstacle?.case?.initial?.trim()||d.obstacle?.tries?.length);return chapter(id)&&started&&!done(s,id)?chapter(id):null;}
+ function primary(s){const c=resume(s)||next(s);return c?launch(s,c,resume(s)?'Continue my journey':count(s)?'Start the next journey':'Start my first journey'):'<button class="button" data-campaign="finale">See my festival</button>';}
  function home(s){
   const c=resume(s)||next(s), n=count(s), caseInfo=c?window.TryvoCaseData[c.id]:null;
   const featured=[chapters[0],chapters[3],chapters[6],chapters[9]];
@@ -22,8 +22,9 @@ window.TryvoCampaign=(()=>{
    <div class="fieldguide-intro">
     <div><div class="world-kicker"><span class="world-spark" aria-hidden="true">✳</span> A playground for your own thinking</div>
      <h1><span class="title-line"><span>Less autopilot.</span></span><span class="title-line"><span>More adventure.</span></span></h1></div>
-    <div class="fieldguide-note"><p>A curious town. A dozen decisions.<br>Take a case, follow the evidence, and see<br class="desktop-break"> where your own thinking takes you.</p><a href="#demo">First time here? Take a little tour <span aria-hidden="true">↗</span></a></div>
+    <div class="fieldguide-note"><p>Practise making your own decisions.<br>Investigate a client case, defend your call,<br class="desktop-break"> and see what it unlocks in the town.</p>${primary(s)}<a href="#demo">New to the map? Learn the controls <span aria-hidden="true">→</span></a></div>
    </div>
+   <ol class="purpose-path" aria-label="How a journey works"><li><b>1</b><span><strong>Make your own call</strong><small>Read the case. Weigh the evidence.</small></span><i aria-hidden="true">→</i></li><li><b>2</b><span><strong>Connect the route</strong><small>Your decision opens a shortcut.</small></span><i aria-hidden="true">→</i></li><li><b>3</b><span><strong>Respond & reflect</strong><small>Meet a new twist. Review your choices.</small></span></li></ol>
    <div class="world-section-heading"><div><span class="world-label">YOUR WORLD</span><h2>The Lantern Festival</h2></div><span class="world-edition">An interactive story set in 2040 <span aria-hidden="true">↙</span></span></div>
    <div class="campaign-world">
     <div class="world-map-wrap" data-depth="map">
@@ -43,7 +44,7 @@ window.TryvoCampaign=(()=>{
      <h2>${esc(c?.title||'Every connection counts.')}</h2>
      <p>${esc(caseInfo?.title||'You made it through every journey. There is always another way to see the story.')}</p>
      ${c?`<div class="chapter-skill"><span>${esc(c.skill)}</span><span>Route planning</span></div>`:''}
-     <div class="dispatch-guide"><span class="mira-avatar">${window.TryvoArt.portrait()}</span><div><strong>A note from Mira</strong><p>${c?'“The festival needs a way forward. I think you’ll see something the town has missed.”':'“Look at what your decisions made possible.”'}</p></div></div>
+     <div class="dispatch-guide"><span class="mira-avatar">${window.TryvoArt.portrait()}</span><div><strong>${resume(s)?'Your work is saved':c?'Begin with the client case':'A note from Mira'}</strong><p>${resume(s)?'Continue your case or route from where you left off.':c?'Make your first judgment, explore the evidence, then recommend what to do.':'“Look at what your decisions made possible.”'}</p></div></div>
      ${primary(s)}<span class="dispatch-footnote">Your decisions move the story forward.</span>
     </aside>
    </div>

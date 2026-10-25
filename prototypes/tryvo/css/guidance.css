@@ -1,0 +1,60 @@
+/* Direction teaches the interface. The decisions and route remain the player's. */
+body #main .fieldguide-note .campaign-launch { margin:16px 0 12px; min-height:46px; padding:12px 18px; gap:20px; font-size:14px; }
+body #main .fieldguide-note>a { display:block; margin-top:0; }
+.purpose-path { list-style:none; display:flex; gap:28px; margin:0 0 32px; padding:20px 0; border-block:1px solid var(--line); }
+.purpose-path li { display:flex; align-items:center; flex:1; gap:12px; min-width:0; }
+.purpose-path li>b { flex:none; width:29px; height:29px; display:grid; place-items:center; border:1px solid #b8c8a9; border-radius:50%; color:var(--action); font-size:12px; }
+.purpose-path strong { display:block; font-size:14px; font-weight:650; color:var(--ink); }
+.purpose-path small { display:block; font-size:12px; line-height:1.5; margin-top:3px; color:var(--muted); }
+.purpose-path i { margin-left:auto; font-style:normal; font-size:23px; color:#688653; }
+body #main .journey-direction { margin:0 0 26px; border:1px solid #c5d2ba; border-radius:12px; background:#f0f4e8; overflow:hidden; scroll-margin-top:110px; }
+.journey-steps { display:flex; list-style:none; gap:20px; padding:15px 22px; margin:0; background:#fffefa; border-bottom:1px solid #d7e0ce; }
+.journey-steps li { display:flex; align-items:center; gap:9px; flex:1; min-width:0; color:#687363; font-size:12px; }
+.journey-steps b { flex:none; display:grid; place-items:center; width:25px; height:25px; border:1px solid #c9d2c1; border-radius:50%; font-size:11px; }
+.journey-steps i { margin-left:auto; font-style:normal; color:#738469; font-size:19px; }
+.journey-steps .is-current { color:#244b38; font-weight:650; }
+.journey-steps .is-current b { background:#28543e; border-color:#28543e; color:#fff; }
+.journey-steps .is-done b { background:#e3edda; color:#31513c; border-color:#b5cba5; }
+.journey-next { display:grid; grid-template-columns:30px minmax(0,1fr) auto; align-items:center; gap:15px; padding:22px; }
+.next-direction-arrow { align-self:start; padding-top:14px; color:#688653; font-size:31px; line-height:1; }
+body #main .journey-next .next-eyebrow { margin:0 0 7px; color:#5b6e50; font-size:9px; font-weight:650; letter-spacing:.13em; }
+body #main .journey-next h2 { margin:0 0 7px; font-size:23px; letter-spacing:-.035em; color:var(--ink); }
+body #main .journey-next p { margin:0; max-width:660px; color:#52604c; font-size:14px; line-height:1.55; }
+body #main .journey-next .button { display:inline-flex; align-items:center; justify-content:center; gap:18px; min-height:46px; padding:12px 18px; border-color:#28543e; background:#28543e; color:white; font-size:13px; text-decoration:none; white-space:normal; }
+body #main .journey-next .button:hover { background:#193e2b; }
+.connection-choice { fill:none; stroke:#f0ffbe; stroke-width:3; stroke-linecap:round; stroke-linejoin:round; vector-effect:non-scaling-stroke; filter:drop-shadow(0 1px 2px #183c2b); }
+body #main .route-open .street.connectable .cell-art { border-color:#eaffaf; border-radius:50%; box-shadow:0 0 0 2px #214b38d9,0 0 0 4px #e3efbe; }
+body #main .street.current-route-end .cell-art { outline:2px solid #fff9df; outline-offset:4px; }
+#dialog .case-direction { display:flex; align-items:center; gap:12px; padding:13px 16px; margin:0 0 20px; border:1px solid #c9d6bc; border-radius:8px; background:#edf3e5; color:#344c31; }
+.case-direction>span { flex:none; font-size:24px; color:#5b7c43; }
+#dialog .case-direction p { flex:1; margin:0; font-size:13px; line-height:1.5; color:#42543b; }
+#dialog .case-direction strong { display:block; margin-bottom:3px; color:#263e2c; font-size:14px; }
+#dialog .case-direction button { flex:none; min-height:44px; border:1px solid #aabf96; border-radius:6px; padding:9px 12px; font-size:12px; color:#254330; background:#fffefa; }
+#dialog .case-direction button:hover { background:#e0ebd4; }
+@media(max-width:900px) {
+ .journey-next { grid-template-columns:25px minmax(0,1fr); }
+ body #main .journey-next .button { grid-column:2; justify-self:start; }
+ .purpose-path { gap:16px; }
+ .purpose-path strong { font-size:13px; }
+ .purpose-path small { font-size:11px; }
+}
+@media(max-width:760px) {
+ body #main .fieldguide-note .campaign-launch { width:100%; justify-content:space-between; }
+ .purpose-path { display:grid; gap:22px; padding:18px 0; margin-bottom:26px; }
+ .purpose-path li { position:relative; gap:12px; }
+ .purpose-path li>b { width:25px; height:25px; }
+ .purpose-path i { position:absolute; left:6px; bottom:-22px; transform:rotate(90deg); font-size:19px; }
+ .purpose-path strong { font-size:14px; }
+ .purpose-path small { font-size:12px; }
+ .journey-steps { gap:8px; padding:13px 12px; align-items:stretch; }
+ .journey-steps li { gap:6px; font-size:10px; line-height:1.35; align-items:flex-start; }
+ .journey-steps b { width:21px; height:21px; font-size:10px; }
+ .journey-steps i { display:none; }
+ .journey-next { padding:17px 14px; gap:12px; grid-template-columns:20px minmax(0,1fr); }
+ .next-direction-arrow { font-size:24px; }
+ body #main .journey-next h2 { font-size:22px; }
+ body #main .journey-next p { font-size:13px; }
+ body #main .journey-next .button { width:100%; justify-content:space-between; font-size:12px; padding:12px; }
+ #dialog .case-direction { flex-wrap:wrap; align-items:flex-start; padding:13px; gap:9px; }
+ #dialog .case-direction button { margin-left:27px; }
+}

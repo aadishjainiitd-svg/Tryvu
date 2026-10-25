@@ -47,3 +47,27 @@ Added native CSS/SVG/Web Animations, map view controls and a persistent motion t
 The new motion suite initially exposed two test assumptions: the map remained partially visible at the footer in a 1120px-tall viewport, and a media-query change event had not fired by the immediate assertion. The final test uses a shorter viewport for the off-screen check and waits for the OS preference event. Both production behaviors then passed.
 
 The recording is at local ignored path `tmp/future-atlas/future-atlas-motion.webm`. Current desktop/mobile screenshots replace the previous field-guide captures; `screenshots/future-atlas-routes.png` shows the route-focused mode. Hidden-tab pausing is implemented but was not independently automated; real-device GPU performance and Safari/Firefox remain unverified. No live provider requests or remote publication occurred in this follow-up.
+
+## Precise journey interactions · 2026-10-25
+
+Focused findings and verified fixes:
+
+1. **Travel/arrival sequencing:** the tutorial changed marker coordinates without interpolation and replaced the map immediately at the final coordinate. Campaign movement used independent timers and could advance before the final CSS movement completed. Shared native-keyframe travel now waits for each leg to finish, pauses at boarded stops, and holds the final position before completion. Turning motion off finishes the presentation; leaving the page cancels callbacks. Scores and route evaluation remain engine-owned.
+2. **Continuity on edits and navigation:** route changes replaced the entire page with no local visual feedback, and return links always reset browsing. Newly added segments now draw briefly; real changed counters receive emphasis. Return links preserve the exact launch control, scroll and index expansion. Supported browser history traversal does likewise. Ordinary top-level navigation still opens at the top. A synchronous before-render event supplies presentation context without delaying game actions.
+3. **Review correction:** a native source reviewer identified that contextual help can be the first child of main. Fixed return flags and page entrance targeting to use actual page sections; the new test checks that returning disables the hero entrance.
+
+Actual verification:
+
+| Check | Result |
+|---|---|
+| `journey-polish-browser.cjs` | Passed. Samples real intermediate tram positions, verifies a visible final-position hold before tutorial/case forms open, cancels a trip on leaving, switches motion off mid-trip, restores expanded index/scroll/exact focus at 1440px and 390px, restores chapter-card focus on browser Back, verifies route-draw settling and Undo. No browser exceptions. |
+| `economy-browser.cjs` | Passed all twelve repair → route → dispatch → score journeys and 15 aggregate checks. Providers bypassed via existing offline exercises. |
+| `tutorial.cjs` | Passed both complete lessons, validation, keyboard controls, reload, Undo, handoff, mobile/tablet layouts, guide behavior, investigations and reset. |
+| `tutorial-preservation.cjs` | Passed normal-motion arrival, existing campaign/award preservation and mobile guide visibility. |
+| `fieldguide-browser.cjs` | Passed six-width responsive, navigation, drawer, contrast/geometry and normal-motion entry checks. |
+| `motion-browser.cjs` | Passed motion controls, preferences, route views, observer/remount behavior and dialog interaction. |
+| `economy-engine.cjs`, `api-config.cjs` | Passed. Changed JavaScript parses and whitespace checks are clean. |
+
+The history test exposed a rapid-navigation edge: queued hashchange events could render the same final destination twice, resetting focus again. Added a rendered-hash guard and coverage for immediate Back as well as two same-turn hash changes. Browser Back restoration uses feature detection for the Navigation API; explicit return links work without it.
+
+Visual evidence is kept locally in ignored `tmp/precise-journeys/`: before/after route screenshots and a WebM showing connection drawing, tram arrival, the case handoff and chapter return. Recording uses authored offline practice data. This pass introduces no new asset or runtime dependency. Chromium was exercised; Safari/Firefox, physical-device performance and live AI providers remain unverified.

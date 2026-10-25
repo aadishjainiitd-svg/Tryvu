@@ -230,11 +230,14 @@ The current **Field Guide** design uses a warm-white canvas, forest-green action
 
 The **Future Atlas** motion pass adds moving route highlights, a Scenery/Routes map selector, pointer-responsive depth, unfolding headlines, staggered cards and dialog entrances. Pause decorative motion from the map toolbar or footer; device reduced-motion settings take precedence. The effects use native CSS/SVG/Web Animations and leave game state unchanged.
 
+Trams now travel continuously along the actual route, pause at pickups and visibly arrive before opening the next step. New route segments draw into place, changed counters receive a brief emphasis, and return links preserve your browsing position and chapter focus.
+
 Run the additional responsive/visual regression checks with the local server running:
 
 ```sh
 node prototypes/tryvo/tests/fieldguide-browser.cjs
 node prototypes/tryvo/tests/motion-browser.cjs
+node prototypes/tryvo/tests/journey-polish-browser.cjs
 ```
 
 These tests write screenshots to your OS temporary directory by default. Set `TRYVO_SCREENSHOT_DIR` to choose another output directory. AI behavior is not exercised by these visual suites.

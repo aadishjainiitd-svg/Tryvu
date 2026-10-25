@@ -39,6 +39,10 @@ The Future Atlas uses a split-line headline reveal, staggered card arrivals, a m
 
 The map toolbar and persistent footer share a Motion on/off button. This preference uses a separate `tryvo-ambient-motion` storage key and survives reloads. Device reduced-motion settings take precedence and disable decorative effects without overwriting the saved preference. Touch devices receive no pointer tilt. No WebGL, animation library, remote asset or custom cursor is needed.
 
+Tram travel is shared by campaign and tutorial in `js/travel.js`. Interpolate along the actual route: accelerate away from stops, keep movement linear through ordinary junctions, slow at pickups/destination, then allow a short arrival hold before advancing. Completion is driven by the animation finishing, never by an unrelated timer. Cancelling a page cancels its travel and completion callback; changing to reduced motion finishes the current presentation immediately. Rules, scores and saved routes remain engine-owned.
+
+Route editing draws only the newly added connection (190ms), and briefly emphasizes changed budget figures using the real final values. It never replays the page entrance. The render hook captures presentation state before synchronous replacement; it must not delay game rendering. Return links restore the original launcher, scroll and open journey index. Browser Back gets the same treatment where the Navigation API is available; ordinary top-level navigation opens at the top. Returning skips the hero entrance. Target the actual section, since contextual help may precede it inside `#main`.
+
 All controls retain native button/link semantics and accessible names. Preserve the `data-*` event contracts, DOM score identifiers, dialog behavior and hash routes. Selected controls have explicit styling; disabled controls remain disabled. Keep readable contrast on input, error, loading, completed and empty states. Check actual computed backgrounds: older `:is()` lists may have higher specificity than expected.
 
 The tutorial guide is sticky only above 900px. Below that, it uses normal document flow and `top:auto`; the counters and map must follow without overlap.
@@ -48,3 +52,5 @@ The tutorial guide is sticky only above 900px. Below that, it uses normal docume
 Run `node prototypes/tryvo/tests/fieldguide-browser.cjs` with the local server running and Playwright available. It covers chapter links, the in-place index, all main pages at six viewport widths, mobile drawer geometry/focus, tutorial overlap, selected text contrast and normal-motion arrival. `tests/motion-browser.cjs` covers view controls, keyboard pin previews, pointer cleanup, pause persistence, off-screen pausing, runtime OS preference changes, repeated mounts and normal-motion case entry/edit/Escape. Existing tutorial, cases, economy and MindScore suites cover the underlying flows.
 
 Reference rationale and limitations are in `research/design-references.md` and `research/design-revamp-verification.md`. No third-party component source was copied in this pass.
+
+`tests/journey-polish-browser.cjs` samples real tram positions and checks arrival sequencing, cancellation, runtime motion changes, route drawing/undo and desktop/mobile return context. Run it alongside the tutorial and economy suites when changing travel or the render hook.

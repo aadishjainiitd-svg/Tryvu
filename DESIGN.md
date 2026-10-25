@@ -4,7 +4,7 @@ Tryvo should feel like a thoughtful, beautifully made game about a place worth e
 
 ## Shared design system
 
-`prototypes/tryvo/css/fieldguide.css` is the last-loaded presentation system. It overrides earlier feature-specific styles; the earlier modules still own game geometry and legacy layouts. Keep changes to shared visual tokens here and verify affected product surfaces in a browser.
+`prototypes/tryvo/css/fieldguide.css` is the shared presentation system; `css/motion.css` loads after it for the Future Atlas treatment. These override earlier feature-specific styles; the earlier modules still own game geometry and legacy layouts. Keep changes to shared visual tokens in the field guide and verify affected product surfaces in a browser.
 
 | Role | Value |
 |---|---|
@@ -33,7 +33,11 @@ Radii: buttons/inputs 8–9px; ordinary panels 12px; map and chapter 16px; dialo
 
 ## Motion and accessibility
 
-Entrances use opacity plus a 12px translation, lasting 600ms with small staggering. Hover changes are 180–200ms. No animation gates a task. Reduced-motion preference removes animation and animated scrolling. Never hide content until an observer runs.
+The Future Atlas uses a split-line headline reveal, staggered card arrivals, a moving SVG route highlight, pointer-responsive map/card depth and short dialog entrances. Motion belongs to exploration and transitions; form updates and route-building moves do not trigger page reveals. The map's Scenery/Routes selector changes presentation only. Hovering or focusing a pin reveals its place and skill in the map caption.
+
+`js/motion.js` owns presentation effects, with one delegated pointer handler and requestAnimationFrame only while pointer input arrives. Card reveals use the native Web Animations API. Content is visible without an observer. Infinite route animation pauses off-screen and in hidden tabs; effects and observers are cleaned up on page replacement. No animation gates a task.
+
+The map toolbar and persistent footer share a Motion on/off button. This preference uses a separate `tryvo-ambient-motion` storage key and survives reloads. Device reduced-motion settings take precedence and disable decorative effects without overwriting the saved preference. Touch devices receive no pointer tilt. No WebGL, animation library, remote asset or custom cursor is needed.
 
 All controls retain native button/link semantics and accessible names. Preserve the `data-*` event contracts, DOM score identifiers, dialog behavior and hash routes. Selected controls have explicit styling; disabled controls remain disabled. Keep readable contrast on input, error, loading, completed and empty states. Check actual computed backgrounds: older `:is()` lists may have higher specificity than expected.
 
@@ -41,6 +45,6 @@ The tutorial guide is sticky only above 900px. Below that, it uses normal docume
 
 ## Verification
 
-Run `node prototypes/tryvo/tests/fieldguide-browser.cjs` with the local server running and Playwright available. It covers chapter links, the in-place index, all main pages at six viewport widths, mobile drawer geometry/focus, tutorial overlap, selected text contrast and normal-motion arrival. Existing tutorial, cases, economy and MindScore suites cover the underlying flows.
+Run `node prototypes/tryvo/tests/fieldguide-browser.cjs` with the local server running and Playwright available. It covers chapter links, the in-place index, all main pages at six viewport widths, mobile drawer geometry/focus, tutorial overlap, selected text contrast and normal-motion arrival. `tests/motion-browser.cjs` covers view controls, keyboard pin previews, pointer cleanup, pause persistence, off-screen pausing, runtime OS preference changes, repeated mounts and normal-motion case entry/edit/Escape. Existing tutorial, cases, economy and MindScore suites cover the underlying flows.
 
 Reference rationale and limitations are in `research/design-references.md` and `research/design-revamp-verification.md`. No third-party component source was copied in this pass.

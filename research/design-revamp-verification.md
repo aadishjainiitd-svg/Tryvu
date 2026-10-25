@@ -34,3 +34,16 @@ Reviewed the existing interface and presentation changes using the installed gst
 Chromium was exercised; Safari, Firefox, physical devices and manual screen-reader use were not. Selected computed text contrast was checked, not a complete accessibility certification. The AI paths used mocks; model response quality, live Groq quota/availability, production hosting and remote deployment are unverified. Existing frontend modules and backend contracts are retained. The CSS still layers over historical feature styles, so future visual work should use the regression suite and inspect specificity.
 
 Screenshots in the README and `prototypes/tryvo/screenshots/` document the new system. Case/report screenshots use authored test data; progress screenshots are demonstration state, not real user outcomes.
+
+## Future Atlas follow-up · 2026-10-25
+
+Added native CSS/SVG/Web Animations, map view controls and a persistent motion toggle after the user requested richer animation and a more futuristic interface. Inspected final desktop and 390px screenshots, the route-focused view and source changes. Fixed adjacent mobile footer controls and tightened the delegated view selector to actual buttons.
+
+- `motion-browser.cjs`: passed Scenery/Routes selection and aria-pressed states, unchanged game storage/hash, keyboard pin readout, pointer cleanup, synchronized motion switches, pause persistence after reload, off-screen pausing/resuming, runtime reduced-motion override without overwriting the saved preference, three repeated page remounts, and normal-motion case entry/edit/Escape. No browser exceptions.
+- `fieldguide-browser.cjs`: reran successfully at all six widths, covering overflow, mobile drawer/focus, tutorial geometry/contrast, chapter links and normal-motion case entry. No failed resources or browser exceptions.
+- `cases-browser.cjs`: reran successfully with mocked providers, including failed-request retry, draft persistence, failed/successful review, one-time rewards, arrival decision, mobile dialogs and offline path.
+- `api-config.cjs`: passed API routing and script loading checks. Changed JavaScript parses and `git diff --check` passes.
+
+The new motion suite initially exposed two test assumptions: the map remained partially visible at the footer in a 1120px-tall viewport, and a media-query change event had not fired by the immediate assertion. The final test uses a shorter viewport for the off-screen check and waits for the OS preference event. Both production behaviors then passed.
+
+The recording is at local ignored path `tmp/future-atlas/future-atlas-motion.webm`. Current desktop/mobile screenshots replace the previous field-guide captures; `screenshots/future-atlas-routes.png` shows the route-focused mode. Hidden-tab pausing is implemented but was not independently automated; real-device GPU performance and Safari/Firefox remain unverified. No live provider requests or remote publication occurred in this follow-up.

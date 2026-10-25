@@ -228,13 +228,16 @@ This is a local prototype. Public deployment needs authentication, user-specific
 
 The current **Field Guide** design uses a warm-white canvas, forest-green actions, locally bundled typography and an illustrated town as its visual anchor. Explore, route play, guided lessons, client cases, progress, reports and rankings share the same presentation system. See [DESIGN.md](DESIGN.md) for tokens and responsive rules, and [redesign verification](research/design-revamp-verification.md) for exercised flows and limitations.
 
+The **Future Atlas** motion pass adds moving route highlights, a Scenery/Routes map selector, pointer-responsive depth, unfolding headlines, staggered cards and dialog entrances. Pause decorative motion from the map toolbar or footer; device reduced-motion settings take precedence. The effects use native CSS/SVG/Web Animations and leave game state unchanged.
+
 Run the additional responsive/visual regression checks with the local server running:
 
 ```sh
 node prototypes/tryvo/tests/fieldguide-browser.cjs
+node prototypes/tryvo/tests/motion-browser.cjs
 ```
 
-This test writes screenshots to your OS temporary directory by default. Set `TRYVO_SCREENSHOT_DIR` to choose another output directory. AI behavior is not exercised by this visual suite.
+These tests write screenshots to your OS temporary directory by default. Set `TRYVO_SCREENSHOT_DIR` to choose another output directory. AI behavior is not exercised by these visual suites.
 
 Tryvo starts from **HTML5 Boilerplate** and adapts selected interaction patterns from **Brad Traversy's 50projects50days**. License notices for those projects and bundled fonts are retained. See [ATTRIBUTION.md](prototypes/tryvo/ATTRIBUTION.md), the [Boilerplate notice](prototypes/tryvo/LICENSE.txt) and `vendor/` for the relevant terms.
 

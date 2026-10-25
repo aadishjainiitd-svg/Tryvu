@@ -15,3 +15,7 @@ Inspected `index.html`, `style.css` and `script.js` for each example before adap
 Adapted interaction logic is in `js/app.js`, shell markup in `index.html`, and scoped styling in `css/interactions.css`. Typography, colours, local artwork and scoring remain Tryvo's. No external fonts, image services, icon CDN or new runtime dependencies were imported.
 
 Original HTML5 Boilerplate and bundled font attribution remains in place; see README.md.
+
+## Field Guide redesign (2026-10-25)
+
+The new presentation in `css/fieldguide.css` and the chapter collection in `js/campaign.js` are original implementation. The supplied [React Bits Split Text](https://reactbits.dev/text-animations/split-text), [Magic UI](https://magicui.design), [21st.dev](https://21st.dev) and [shadcn/ui button documentation](https://ui.shadcn.com/docs/components/base/button) informed motion restraint and component hierarchy; none of their source code was copied and no related package was installed. Existing town artwork and fonts are reused. The navigation now uses a desktop horizontal bar and mobile drawer; the earlier mobile-tab adaptation remains in the legacy style history.

@@ -22,3 +22,15 @@
  });
  mobile.addEventListener('change',()=>setOpen(false));setOpen(false);
 })();
+
+// Expand the journey index without changing the application's hash route.
+document.addEventListener('click', event => {
+ const link = event.target.closest('[data-browse-journeys]');
+ if (!link) return;
+ const index = document.querySelector('#all-journeys');
+ if (!index) return;
+ event.preventDefault();
+ index.open = true;
+ index.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start'});
+ index.querySelector('summary').focus({preventScroll: true});
+});
